@@ -39,7 +39,7 @@ const LoginSignUp = () => {
 
     console.log("signUp");
     let responseData;
-    await fetch("http://54.79.239.162:4000/signup", {
+    await fetch("https://abiv.rnpsoft.com/signup", {
       method: "POST",
       headers: {
         Accept: "application/form-data",
@@ -61,7 +61,7 @@ const LoginSignUp = () => {
     event.preventDefault();
     console.log(formInput);
     let responseData;
-    await fetch("http://54.79.239.162:4000/login", {
+    await fetch("https://abiv.rnpsoft.com/login", {
       method: "POST",
       headers: {
         Accept: "application/form-data",
@@ -82,7 +82,7 @@ const LoginSignUp = () => {
   const handelForgetPassword =async(event)=>{
     event.preventDefault();
     let responseData;
-    await fetch("http://54.79.239.162:4000/findUser", {
+    await fetch("https://abiv.rnpsoft.com/findUser", {
       method: "POST",
       headers: {
         Accept: "application/form-data",

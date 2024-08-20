@@ -67,7 +67,7 @@ const [dura,setdura]=useState({})
     const[act,setact]=useState(false)
     const deleteFile = async (filename) => {
       try {
-        const response = await axios.delete('http://54.79.239.162:4000/delete-file', {
+        const response = await axios.delete('https://abiv.rnpsoft.com/delete-file', {
           data: { filename },
         });
         console.log(response.data); // 'File deleted successfully'
@@ -86,7 +86,7 @@ const [dura,setdura]=useState({})
       }
     }
     const updateData = async (data1) => {
-      let updateUrl='http://54.79.239.162:4000/submit'
+      let updateUrl='https://abiv.rnpsoft.com/submit'
       let headers={
         'Content-Type': 'application/json',
         'Authorization': 'Bearer YOUR_TOKEN'  // Replace with your headers
@@ -239,7 +239,7 @@ const [dura,setdura]=useState({})
       console.log(durations)
     }
     const fetchresult2=async(i,f,t)=>{
-      const fetchUrl = 'http://54.79.239.162:4000/submit1';
+      const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
       const headers = {
         // Add any required headers here
         'Content-Type': 'application/json',
@@ -260,7 +260,7 @@ const [dura,setdura]=useState({})
         console.error('Failed to fetch data:', response1.statusText);
       }}catch(error){}}
     const fetchresult=async(i)=>{
-      const fetchUrl = 'http://54.79.239.162:4000/submit1';
+      const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
       const headers = {
         // Add any required headers here
         'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ const [dura,setdura]=useState({})
         console.error('Failed to fetch data:', response1.statusText);
       }}catch(error){}}
       const fetchresult1=async(i)=>{
-        const fetchUrl = 'http://54.79.239.162:4000/submit1';
+        const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
         const headers = {
           // Add any required headers here
           'Content-Type': 'application/json',
@@ -308,8 +308,8 @@ const [dura,setdura]=useState({})
     const fetchVideo = async (i) => {
         
       try {
-        console.log(`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
-        const response = await fetch(`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
+        console.log(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
+        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
         if (!response.ok) {
           throw new Error('Failed to fetch video');
         }
@@ -325,8 +325,8 @@ const [dura,setdura]=useState({})
     };
     const fetchTeacher = async (i) => {
       try {
-        console.log(`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
-        const response = await fetch(`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`); // Change the URL according to your server
+        console.log(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
+        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`); // Change the URL according to your server
         if (!response.ok) {
           throw new Error('Failed to fetch video');
         }
@@ -450,16 +450,16 @@ console.log('Duration is '+localStorage.getItem('duration'));
 
       try {
         await fetchresult(2)
-        const response = await axios.get(`http://54.79.239.162:4000/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
-        const response1=await axios.get(`http://54.79.239.162:4000/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`)
+        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
+        const response1=await axios.get(`https://abiv.rnpsoft.com/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`)
         if (response.data.available && response1.data.available) {
           let ca=Number(localStorage.getItem('capt'))
           console.log('my value is'+ca)
           await fetchresult1(2)
 setl1(true)
           setLoaded(true)
-          let url1=`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`
-          let url2=`http://54.79.239.162:4000/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
+          let url1=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`
+          let url2=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
           
           videoRef1.current.src=url1
           videoRef2.current.src=url2
@@ -505,12 +505,12 @@ setl1(true)
     const checkDoubtAvailability = async (i) => {
       try {
         fetchresult(1)
-        const response = await axios.get(`http://54.79.239.162:4000/check-availability/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`);
+        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`);
         if (response.data.available) {
           setl1(true)
           setLoaded(true)
           setdoubt(true)
-          let url1=`http://54.79.239.162:4000/downloads/uploads/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`
+          let url1=`https://abiv.rnpsoft.com/downloads/uploads/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`
           await preloadVideo(url1);
           setAnimating(true);
           videoRef1.current.src=url1

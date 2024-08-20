@@ -27,7 +27,7 @@ const Popup = ({filedata}) => {
         const formData = new FormData();
         formData.append('file', file);
     formData.append('text',data)
-        const response = await axios.post('http://54.79.239.162:4000/upload', formData, {
+        const response = await axios.post('https://abiv.rnpsoft.com/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
