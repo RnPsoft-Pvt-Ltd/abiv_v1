@@ -45,6 +45,23 @@ const Video = () => {
     const [capt,setcapt]=useState(0)
     const [switcher,setswitch]=useState(false)
     const [appeared,setappeared]=useState(true)
+    const [hasPermission, setHasPermission] = useState(false);
+  const [error, setError] = useState(null);
+
+  const requestMicrophoneAccess = async () => {
+    try {
+      // Request access to the microphone
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setHasPermission(true);
+      console.log('Microphone access granted');
+      // Do something with the stream, if needed
+      stream.getTracks().forEach(track => track.stop()); // Stop the stream after use
+    } catch (err) {
+      setHasPermission(false);
+      setError('Microphone access denied');
+      console.error('Microphone access error:', err);
+    }
+  };
 let durations={}
 const [dura,setdura]=useState({})
     const[act,setact]=useState(false)
@@ -323,6 +340,7 @@ const [dura,setdura]=useState({})
       }
     };
     useEffect(() => {
+      requestMicrophoneAccess()
       localStorage.setItem('capt','0');
       localStorage.setItem('duration','0');
       localStorage.setItem('appeared','0')
