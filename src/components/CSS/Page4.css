@@ -1,0 +1,58 @@
+.doubtbox{
+    border: 1px solid linear-gradient(#000D3F 0% , #000000 100%);
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#000D3F 0% , #000000 100%);
+}
+
+.doubtheading h1{
+    font-size: 45px;
+    font-weight: bold;
+
+}
+
+.doubtheading p{
+    font-size: 18px;
+}
+
+.doubtbox2{
+    
+   background: #ffc857;
+   background-image:linear-gradient(357deg, #ffc857 -159%, white 20%, #73609a 51%);
+  
+    
+}
+
+
+.doubtcard a{
+    margin-left: 11.5%;
+    background: black;
+
+    margin-top: 9%;
+    margin-bottom: 9%;
+    
+}
+
+.doubtcard span{
+    float: left;
+    background: #FBF7B8;
+    color: #573CFF;
+}
+
+
+.doubtcard img{
+    float: right;
+    height: 35%;
+}
+
+.doubtcard h4{
+    margin-top: 9%;
+    float: left;
+    
+}
+
+.doubtcard h5{
+    margin-top: 10%;
+display: flex;
+gap: 8px;
+}

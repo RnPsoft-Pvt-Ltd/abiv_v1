@@ -1,0 +1,148 @@
+/* Reset and basic styles */
+/* body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #010B78 14.55%, #000000 100%);
+    color: #FFFFFF;
+} */
+
+/* Main section styles */
+.hero-background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+}
+
+.hero-image {
+    position: relative;
+    display: inline-block;
+    left: 280px;
+    top: 138px;
+    max-width: 120px;
+    mix-blend-mode: hard-light;
+}
+
+.section-content {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.section-content h1 {
+    font-size: 37px;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 20px;
+    color: #b9b9b9;
+    margin: 10px 0;
+    max-width: 150%;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.file-drop {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #d9d9d9;
+    background-color: #010c16;
+    border-radius: 10px;
+    color: #ffffff;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 650px;
+    height: 250px;
+    cursor: pointer;
+    padding-bottom: 20px;
+}
+
+.file-drop input {
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-drop label .icon {
+    margin-bottom: 10px;
+}
+
+.file-drop label {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+
+#browsecomp {
+    position: absolute;
+    bottom: 0.2px;
+    left: 10px;
+    color: rgba(118, 153, 222, 1);
+}
+
+#fromurl {
+    position: absolute;
+    bottom: 0.2px;
+    right: 10px;
+    font-size: 14px;
+    color: rgba(118, 153, 222, 1);
+}
+
+.question-input {
+    background-color: #010c16;
+    border: 1.5px solid #053059;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    width: 400px;
+    margin-left: 80px;
+    max-width: 550px;
+    height: 40px;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.question-input input {
+    background-color: #010c16;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    flex: 1;
+    padding-left: 10px;
+}
+
+.send-button {
+    background-color: #010c16;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.send-button img {
+    width: 15px;
+    height: 15px;
+}
+
+@media (min-width: 768px) {
+    .section-content {
+        max-width: 600px;
+    }
+
+    .question-input {
+        max-width: 600px;
+    }
+}

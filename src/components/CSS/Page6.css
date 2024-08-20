@@ -1,0 +1,26 @@
+.videoheading{
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    
+}
+
+.video{
+    padding-top: 10%;
+    padding-bottom: 6%;
+    background: black
+}
+
+#video{
+    border: 2px solid white;
+    border-radius: 10px;
+    width: 85%;
+    height: 75%;
+    margin-top: 5%;
+   
+}
+
+#video video{
+    width: 80%;
+    height: 75%;
+}

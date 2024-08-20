@@ -1,0 +1,69 @@
+.loader {
+  border: 8px solid #f3f3f3; /* Light grey */
+  border-top: 8px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 2s linear infinite;
+}
+.loadingimg{
+  width: 150px;
+  height: 150px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* styles.css */
+.flip-animation {
+  animation: flip 1s forwards;
+}
+
+@keyframes flip {
+  0% {
+    transform: perspective(1000px) rotateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: perspective(1000px) rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: perspective(1000px) rotateY(0);
+    opacity: 1;
+  }
+}
+/* App.css */
+
+.video-container {
+  transition: opacity 7s ease-in-out;
+}
+
+.fade-out {
+  opacity: 0.75;
+}
+
+.fade-in {
+  opacity: 1;
+}
+.flip-book {
+  transform-style: preserve-3d;
+  transition: transform 11s;
+}
+
+.flipping .flip-book {
+  transform: rotateY(-180deg);
+}
+
+.video-page {
+  
+  backface-visibility: hidden;
+}
+
+.front {
+  z-index: 2;
+}
+
+.back {
+  transform: rotateY(180deg);
+}
