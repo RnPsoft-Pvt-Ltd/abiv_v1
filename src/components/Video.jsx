@@ -17,7 +17,7 @@ import mcq from './mcq.mp3'
 import './styles.css';
 const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
-
+  const[isRecognizing,setRec]=useState(false)
     const [videoSrc, setVideoSrc] = useState('null');
     const [isDoubt,setdoubt]=useState(false);
     const [isLoaded,setLoaded]=useState(true)
@@ -552,12 +552,30 @@ setl1(true)
         const recognition = new SpeechRecognition();
         recognition.continuous = true;
         recognition.lang = 'en-US';
+       
+recognition.onstart = function() {
+  setRec(true)
+    console.log("Recognition started.");
+};
+
+
+    recognition.onerror = function(event) {
+        console.error('Recognition error:', event.error);
+        // Restart recognition unless there's a specific error that should stop it
+        if (isRecognizing) {
+          recognition.stop();  // Stop recognition if it's still running
+      }
+      setTimeout(()=>{recognition.start()},1000)
+      
+        
+    };
         recognition.onresult = function(event) {
+          setRec(false)
           const result = event.results[event.results.length - 1];
-          const transcript = result[0].transcript;
+          const transcript = result[0].transcript.trim();
           console.log("transcript")
           console.log(transcript);
-          
+          console.log("transcript:", transcript);
           recognition.stop();
           if(transcript.includes('no')){
             localStorage.setItem('mcq','0');
@@ -567,6 +585,7 @@ setl1(true)
             setact(true)
             setstopper(true)
           }else{
+           
           fetchresult2(2,flagged,transcript)
           
          
