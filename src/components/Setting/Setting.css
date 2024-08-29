@@ -1,94 +1,23 @@
-
-.container-ll {
-    position: relative;
-    width: 800px;
-    max-width: 100%;
-    min-height: 470px;
-    /* background: #D9D9D9; */
-    border-radius: 10px;
-    overflow: hidden;
-    /* box-shadow: 0 0 200px #5511DA; */
-    margin: 80px 0 0 0;
-
-}
-.container-ll form {
-    /* background: #5511DA; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
-}
-.container-ll h1 {
-    font-weight: bold;
-    margin: 0;
+.buttonsetting{
+    margin-left: 29%;
 }
 
-.container-ll p {
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 20px;
-    letter-spacing: 0.5px;
-    margin: 15px 0 20px;
+
+.profilesection{
+    transition: 2s;
+    /* margin-left: 13%; */
+}
+.profilesection:hover{
+    transform: translateX(1.1);
 }
 
-.container-ll input {
-    background: #eee;
-    color: black;
-    padding: 12px 15px;
-    margin: 8px 15px;
-    width: calc(100% - 30px);
-    border-radius: 5px;
-    border: none;
-    outline: none;
+.verifyotp{
+    width: 350px;
+    margin-left: -8px;
+    
 }
 
-.container-ll a {
-    color: #333;
-    font-size: 14px;
-    text-decoration: none;
-    margin: 15px 0;
-}
 
-.container-ll button {
-    color: black;
-    background: #343bff;
-    font-size: 15px;
-    font-weight: bold;
-    padding: 12px 55px;
-    margin: 10px;
-    border-radius: 20px;
-    border: 1px solid #343bff;
-    outline: none;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
-    cursor: pointer;
-}
-
-.container-ll button:active {
-    transform: scale(0.9);
-}
-.body-1 {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    font-family: 'Montserrat', sans-serif;
-    min-height: 100%;
-}
-
-.form-section h1{
-  text-align: center;
-  color: #d9d9d9;
-}
-
-.form-section button{
-    color: #d9d9d9;
-}
-
-.form-section input{
-    width: 400px;
-}
+/* #verifybutton{
+    margin-left: 24%;
+} */

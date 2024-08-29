@@ -27,6 +27,8 @@ const Video = () => {
     const [duration,setduration]=useState(0);
     const [isTLoaded,setTLoaded]=useState(true)
     const videoRef1 = useRef(null);
+    const [quizToggle, setQuizToggle] = useState(true);
+    const [interview,setinterview]=useState(false)
     const [isFullScreen, setIsFullScreen] = useState(false);
     const videoRef2 = useRef(null);
     const audioRef1=useRef(null);
@@ -303,7 +305,8 @@ const [dura,setdura]=useState({})
         }}catch(error){}}
       
     const { flagged } = location.state || {};
-    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[]],[0,0,0,'','',0,0,[],0,[],0,'',[]],[0,0,0,'','',1,0,[],0],[0,0,0,'','',1,0,[],0]])
+    const { random } =  location.sessionid || {};
+    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
     let b=0
     const fetchVideo = async (i) => {
         
@@ -342,6 +345,7 @@ const [dura,setdura]=useState({})
     useEffect(() => {
       requestMicrophoneAccess()
       localStorage.setItem('capt','0');
+      localStorage.setItem('capt1','0');
       localStorage.setItem('duration','0');
       localStorage.setItem('appeared','0')
       localStorage.setItem('mcq','0');
@@ -454,17 +458,17 @@ console.log('Duration is '+localStorage.getItem('duration'));
         const response1=await axios.get(`https://abiv.rnpsoft.com/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`)
         if (response.data.available && response1.data.available) {
           let ca=Number(localStorage.getItem('capt'))
+          let ca2=Number(localStorage.getItem('capt1'))
           console.log('my value is'+ca)
           await fetchresult1(2)
 setl1(true)
           setLoaded(true)
           let url1=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`
           let url2=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
-          
           videoRef1.current.src=url1
           videoRef2.current.src=url2
           videoRef1.current.currentTime=ca
-          videoRef2.current.currentTime=ca
+          videoRef2.current.currentTime=ca2
           videoRef1.current.load()
           videoRef2.current.load()
           videoRef1.current.play()
@@ -543,6 +547,7 @@ setl1(true)
       console.log(b)
       setact(false)
       console.log(data[flagged][6])
+      
       if(videoRef2.current.muted){
       }
       if(videoRef1.current.src.includes('doubt_anim')){
@@ -614,14 +619,14 @@ recognition.onstart = function() {
         setcapt1(false)
        }else{
         setstopper(true)
-        if(Number(localStorage.getItem('b'))%3==0){
+        if(Number(localStorage.getItem('b'))%3==0 && quizToggle){
           localStorage.setItem('appeared','1')
           
           localStorage.setItem('b',JSON.parse(Number(localStorage.getItem('b')))-1)
           setcapt1(true)
           if(Number(localStorage.getItem('mcq'))==0){
-            setcaption('If you have any doubts feel free to ask')
-
+          setcaption('If you have any doubts feel free to ask')
+          localStorage.setItem('capt1',Number(Math.round(videoRef2.current.duration)))  
           setShowQuiz(true)
           setnumber(number+1)
           localStorage.setItem('mcq','1');
@@ -646,12 +651,18 @@ recognition.onstart = function() {
 
         setact(true)
        
-          
+        localStorage.setItem('capt1',Number(Math.round(videoRef2.current.duration)))  
         
 checkVideoAvailability(Number(localStorage.getItem('b')))
 }}      
     }
     }
+    const toggleQuiz = () => {
+      setQuizToggle(!quizToggle);
+      if (!quizToggle) {
+          setShowQuiz(false);
+      }
+  };
     const downloadNotes = () => {
       var printWindow = window.open('', '', 'height=400,width=800');
       
@@ -671,12 +682,22 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
     };
 
     return (
-      
         <div className='video-page-background w-screen  flex flex-col justify-center items-center text-white font-[Montserrat] '>
             <h1 className='md:text-5xl text-[22px] text-center lg:text-justify  mt-5 font-semibold font-[jost]'>{topic==''?``:`TOPIC NAME: ${topic}`}</h1>
+            <div className='relative flex items-center absolute right-[-380px] top-[-10px]'>
+                        <span className='text-sm mr-2'>Quiz:</span>
+                        <label className="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" className="sr-only peer" checked={quizToggle} onChange={toggleQuiz} />
+                            <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{quizToggle ? 'On' : 'Off'}</span>
+                        </label>
+                    </div>
+                   
+                      
+                    
                <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
-     
-
+               
+               
       {/* Video 1 */}
       <div className={`${showQuiz ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
         <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
@@ -726,6 +747,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
             <p className='font-semibold font-[jost]'>Thinking...</p>
             <audio autoPlay src={bg_music} loop></audio>
           </div>
+         
         ) : null}
       {/* Quiz and controls */}
       {showQuiz && ( <div className="absolute inset-0 flex items-center justify-center z-30">

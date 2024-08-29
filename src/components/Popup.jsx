@@ -11,10 +11,21 @@ const Popup = ({filedata}) => {
     const [language,setLanguage] =useState("")
     const [lngSelected,setLngSelected]=useState(false);
     const [flagged,setflag]=useState(0)
+    const random=generateRandomCode();
     let file=filedata.state.file
     file=file[0]
-
+    function generateRandomCode(length = 6) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      const charactersLength = characters.length;
+      for (let i = 0; i < length; i++) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      
+      return result;
+  }
     const handleUpload = async (data) => {
+      
       console.log(file)
       if (!file) {
         console.error('No file selected');
@@ -26,7 +37,8 @@ const Popup = ({filedata}) => {
         else data='True'
         const formData = new FormData();
         formData.append('file', file);
-    formData.append('text',data)
+    formData.append('text',data);
+    formData.append('sessionid',random)
         const response = await axios.post('https://abiv.rnpsoft.com/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -54,8 +66,9 @@ const Popup = ({filedata}) => {
 
     useEffect(() => {
       localStorage.setItem('capt','0');
+      localStorage.setItem('capt1','0');
       localStorage.setItem('duration','0');
-      localStorage.setItem('appeared','0')
+      localStorage.setItem('appeared','0');
       
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
@@ -75,8 +88,7 @@ const Popup = ({filedata}) => {
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
       localStorage.setItem('teacher', null);
-                nav("/video", { state: { flagged } });
-                
+                nav("/video", { state: { flagged },sessionid:{random} });   
             }
         }
         

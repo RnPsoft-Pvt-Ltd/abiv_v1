@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import logo from "../assets/Vector.svg";
 import search from "../assets/search.png";
 import { CirclePlay, Menu, X } from 'lucide-react';
@@ -7,43 +7,37 @@ import profile from "../assets/NoProfile.jpg";
 import successIcon from "../assets/success.png";
 import alertIcon from "../assets/alert.png";
 import errorIcon from "../assets/error.png";
-import coin from "../assets/Coins.png";
+import coin from "../assets/image 97.png";
 import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const [toggle, setToggle] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
+    const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
     const navigate = useNavigate();
-    const [notifications] = useState([
-        {
-            type: 'new',
-            title: 'New Message',
-            content: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente non ad odit, nisi aliquid aliquam quae nostrum? Deleniti odio facilis aliquam, soluta sunt, dignissimos quis fugiat, nostrum ducimus perspiciatis earum.',
-            time: 'Today 11:00PM',
-        },
-        {
-            type: 'success',
-            title: 'Successfully Message',
-            content: '',
-            time: 'Today 10:30PM',
-            icon: successIcon
-        },
-        {
-            type: 'alert',
-            title: 'Alert Message',
-            content: '',
-            time: 'Today 10:30PM',
-            icon: alertIcon
-        },
-        {
-            type: 'error',
-            title: 'Error Message',
-            content: '',
-            time: 'Today 10:30PM',
-            icon: errorIcon
-        },
-    ]);
+    const profileRef = useRef(null);
+    const recentlyViewedRef = useRef(null);
+
+    useEffect(() => {
+        // Function to handle clicks outside of dropdowns
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setShowProfile(false);
+            }
+            if (recentlyViewedRef.current && !recentlyViewedRef.current.contains(event.target)) {
+                setShowRecentlyViewed(false);
+            }
+        };
+
+        // Attach event listener
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handelToggle = () => {
         setToggle(!toggle);
@@ -78,9 +72,7 @@ const Header = () => {
             });
 
             if (response.ok) {
-                // Redirect to the homepage
                 navigate('/');
-
             } else {
                 console.error('Logout failed');
             }
@@ -94,19 +86,29 @@ const Header = () => {
         const event = new CustomEvent('scrollToPage3');
         window.dispatchEvent(event);
         navigate('/home', { state: { scrollToPage3: true } });
-
     };
+
     const handleFeaturesClick = () => {
         const event = new CustomEvent('scrollToPage2');
         window.dispatchEvent(event);
         navigate('/home', { state: { scrollToPage2: true } });
     };
 
+    const handleNavigate = (path) => {
+        navigate(path);
+        setShowProfile(false); // Close profile dropdown after navigation
+    };
+
+    const toggleRecentlyViewed = () => {
+        setShowRecentlyViewed(!showRecentlyViewed);
+        setShowProfile(false);
+    };
+
     return (
         <nav className='sticky top-0 z-50 py-3 backdrop-blur-lg border-neutral-700 navbar-background'>
             <div className="container px-4 mx-auto relative text-sm">
-                <div className="flex  justify-between items-center">
-                    <div className="flex items-center flex-shrink-0 ">
+                <div className="flex justify-between items-center">
+                    <div className="flex items-center flex-shrink-0">
                         <img className='w-[6rem] h-[5rem] lg:w-[8rem] lg:h-[5rem]' src={logo} alt="Logo" />
                     </div>
 
@@ -116,7 +118,7 @@ const Header = () => {
                             <li className="py-4"><Link to="/pricing">Pricing</Link></li>
                             <li className="py-4"><Link to="/contact">Contact Us</Link></li>
                             <li className="hidden lg:flex items-center gap-2 px-3">
-                                <div className=' border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-5 h-5 rounded-full' /></div><span className='text-[#EBB12B]'>100</span>
+                                <div className='border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-7 h-7 rounded-full' /></div><span className='text-[#EBB12B]'>100</span>
                             </li>
                         </ul>
                         <div className='rounded-full cursor-pointer' onClick={toggleProfile}>
@@ -124,12 +126,11 @@ const Header = () => {
                         </div>
                     </div>
                     <div className='lg:hidden flex space-x-2'>
-                        <div className=" flex lg:hidden ml-24 items-center gap-2  px-5">
-                        <div className=' border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-5 h-5 rounded-full' /></div><span className='text-'>100</span>
+                        <div className="flex lg:hidden ml-24 items-center gap-2 px-5">
+                            <div className='border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-5 h-5 rounded-full' /></div><span className='text-'>100</span>
                         </div>
                         {toggle ? <X color='white' onClick={handelToggle} className='lg:hidden' /> : <Menu color='#ffff' className='lg:hidden' onClick={handelToggle} />}
                     </div>
-
                 </div>
                 {toggle &&
                     <div className="flex flex-col justify-center items-center py-12 bg-black list-none z-20 right-0 fixed w-full text-center top-to-bottom">
@@ -144,14 +145,47 @@ const Header = () => {
                     </div>
                 }
                 {showProfile &&
-                    <div className="absolute right-0 mt-2 w-48 bg-[#000622] shadow-lg rounded-lg z-20">
+                    <div ref={profileRef} className="absolute right-0 mt-2 w-48 rounded-3xl bg-[#1a1a1a] shadow-lg  z-20 text-center">
+                    <div className="flex items-center justify-center py-4 border-b border-gray-700">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6 text-white"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+            </svg>
+        </div>
                         <ul>
-                            <li className="p-4 hover:bg-gray-100 hover:text-black cursor-pointer flex items-start">
-                                <Link to="/setting" className="w-full">Settings</Link>
+                            <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={toggleRecentlyViewed}>
+                                Recently viewed content
                             </li>
-                            <li onClick={logOut} className="p-4 hover:bg-gray-100 hover:text-black cursor-pointer flex items-start">
+                            <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={() => handleNavigate('/stats')}>
+                                Usage stats
+                            </li>
+                            <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={() => handleNavigate('/setting')}>
+                                User settings
+                            </li>
+                            <li onClick={logOut} className="py-3 px-4 hover:bg-gray-700 hover:text-white cursor-pointer">
                                 Logout
                             </li>
+                        </ul>
+                    </div>
+                }
+                {showRecentlyViewed &&
+                    <div ref={recentlyViewedRef} className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] shadow-lg rounded-3xl z-20 text-center">
+                        <ul>
+                            <li className="py-3 px-4 text-white">Recently viewed content</li>
+                            <li className="py-3 px-4 text-white">Recently viewed content</li>
+                            <li className="py-3 px-4 text-white">Recently viewed content</li>
+                            <li className="py-3 px-4 text-white">Recently viewed content</li>
+                            <li className="py-3 px-4 text-white">Recently viewed content</li>
                         </ul>
                     </div>
                 }

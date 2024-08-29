@@ -51,7 +51,7 @@ const HeroSection2 = () => {
             <img src={circle4} className='w-[10%] absolute bottom-52 right-80' alt="" />
             <div className='w-[400px]  flex justify-center items-center relative'>
             <img src={group1} alt="" className='min-w-[344px] sm:w-[480px]  z-20' />
-            <img
+            <img 
               src={video1} 
               autoPlay 
               loop 
@@ -68,7 +68,7 @@ const HeroSection2 = () => {
       <div className='bg-rad-grad w-[100%] h-[100%] hidden  lg:flex justify-center relative items-center'>
         <img src={bulb} className='hidden lg:block absolute top-16 left-50' alt="" />
         <img src={react} className='hidden lg:block absolute top-8 right-20' alt="" />
-        <img src={circle3} className='hidden lg:block absolute lg:bottom-4 xl:-bottom-8 right-16' alt="" />
+        <img src={circle3} className='hidden lg:block absolute lg:bottom-4 xl:bottom-2 right-16' alt="" />
         <img src={circle4} className='hidden lg:block absolute lg:bottom-32 xl:bottom-16 right-80' alt="" />
         <img src={circle5} className='hidden lg:block absolute top-60 left-36 z-0' alt="" />
         <img src={circle6} className='hidden lg:block absolute top-32  right-28 z-0' alt="" />

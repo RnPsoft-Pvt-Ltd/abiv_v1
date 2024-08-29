@@ -23,7 +23,7 @@ const Page4 = () => {
                         Affordable and scalable options for everyone. Affordable and scalable <br />
                         options for everyone. Affordable and scalable options for everyone.
                     </p>
-                    <div className="mx-auto w-11/12 lg:w-4/6 h-[70%] doubtbox2 border rounded-2xl mt-8">
+                    <div className="mx-auto w-11/12 lg:w-4/6 h-[70%] bg-opacity-20 bg-[#FFFFFF]  rounded-2xl mt-8">
                         <div className="grid grid-cols-2 gap-4 p-3">
                             {/* First card */}
                             <a href="/" className="block w-full sm:w-[200px] md:w-[250px] lg:w-[310px] h-[240px] sm:h-[320px] md:h-[380px] lg:h-[400px] p-2 md:p-6 bg-black rounded-2xl shadow mx-auto lg:text-lg text-[10px]">

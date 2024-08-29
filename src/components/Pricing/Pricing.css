@@ -1,0 +1,82 @@
+.pricing {
+    background: white;
+}
+
+.pricing h1 {
+    font-size: 60px;
+    color: rgba(2, 1, 90, 1);
+
+    font-weight: medium;
+
+}
+
+.pricing p {
+    font-size: 18px;
+    color: rgba(104, 112, 140, 1);
+
+}
+
+.card-group {
+    width: 1000px;
+    height: 500px;
+    
+}
+
+
+
+.card-body {
+
+    border-radius: 20px;
+    box-shadow: 0 0 15px 3px rgb(190, 182, 182);
+}
+
+.card-body p {
+    font-size: 16px;
+    
+}
+
+.card-body h1 {
+    font-size: 45px;
+    font-weight: 400;
+    margin-top: -13%;
+}
+
+.card-body button {
+    margin-left: 7%;
+    width: 230px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(87, 60, 255, 1);
+    background-color: white;
+    color: rgba(87, 60, 255, 1);
+    margin-top: 5%;
+    font-weight: bold;
+
+}
+
+.card-body span {
+    width: 80px;
+    height: 24px;
+    border-radius: 40px;
+    font-weight: 360;
+}
+
+.form-check-input {
+
+    border-radius: 80%;
+    border: 1px solid black;
+}
+
+.arrow {
+    margin-left: 73%;
+    margin-top: -8%;
+
+}
+
+
+
+.formcheck {
+    font-size: 17px;
+    font-weight: 500;
+
+}

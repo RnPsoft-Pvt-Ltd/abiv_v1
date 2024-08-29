@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.8e923b89.css",
-    "main.js": "/static/js/main.231afb4d.js",
+    "main.css": "/static/css/main.38dff1dd.css",
+    "main.js": "/static/js/main.57bc44ac.js",
     "static/media/alter.mp4": "/static/media/alter.6bdcd6d7e2ca00e1a193.mp4",
     "static/media/animation1.mp4": "/static/media/animation1.822682eceaab764833fc.mp4",
     "static/media/video.mp4": "/static/media/video.f6fd00ae9e702e2499d2.mp4",
@@ -13,17 +13,22 @@
     "static/media/robot.png": "/static/media/robot.d6e7245ac35ebeda6ce5.png",
     "static/media/doubt_anim.mp4": "/static/media/doubt_anim.7e13ced628dc316015b1.mp4",
     "static/media/welcome.mp4": "/static/media/welcome.2a1f590d01bc158d65cb.mp4",
+    "static/media/Ellipse 2.png": "/static/media/Ellipse 2.c61dfe9741cf851d5a53.png",
     "static/media/mcq.mp3": "/static/media/mcq.4d43bd3f9e110daa9005.mp3",
     "static/media/Doubt.mp4": "/static/media/Doubt.a1ec4de89dc0b84ac5d5.mp4",
+    "static/media/Ellipse 3.png": "/static/media/Ellipse 3.bbadefc79a222a19719e.png",
     "static/media/Rectangle 6695.png": "/static/media/Rectangle 6695.9192b931d948b26a81ac.png",
     "static/media/Rectangle 6696.png": "/static/media/Rectangle 6696.b203954331933ed7204c.png",
     "static/media/Rectangle 6697.png": "/static/media/Rectangle 6697.86ff654096174fbf890a.png",
     "static/media/video_robot.png": "/static/media/video_robot.e749fbe8e4648ac537f1.png",
     "static/media/Vector.svg": "/static/media/Vector.788b0148e6055d67c5eb886c05f0dfe7.svg",
     "static/media/OBJECTS.png": "/static/media/OBJECTS.36fdb9ab7896e5ab5f1c.png",
+    "static/media/Ellipse 4.png": "/static/media/Ellipse 4.982b9a63885e0ff42f9e.png",
     "static/media/illustration.png": "/static/media/illustration.6ddb5126b59679e4e80d.png",
+    "static/media/Ellipse 5.png": "/static/media/Ellipse 5.a9c2c72bb386b1a3b8ab.png",
     "static/media/NoProfile.jpg": "/static/media/NoProfile.0e3b855ef882c3d2ddfc.jpg",
     "static/media/Ellipse 1.png": "/static/media/Ellipse 1.cce2836ec60a0b567e11.png",
+    "static/media/chat-icon.png": "/static/media/chat-icon.0c47f2d0b6e3b5a526f7.png",
     "static/media/success.png": "/static/media/success.837d8d85dea4f73d4273.png",
     "static/media/error.png": "/static/media/error.1f4d8c2ab7c1a17a50e0.png",
     "static/media/isometric view of man working online.png": "/static/media/isometric view of man working online.38689ac337d50434aa0b.png",
@@ -33,11 +38,11 @@
     "static/media/inbox.svg": "/static/media/inbox.dc3955a8ab8d3088d81f3ee122d6bcf1.svg",
     "index.html": "/index.html",
     "static/media/bell.svg": "/static/media/bell.f59aa6bf805db4267977064fa4461f91.svg",
-    "main.8e923b89.css.map": "/static/css/main.8e923b89.css.map",
-    "main.231afb4d.js.map": "/static/js/main.231afb4d.js.map"
+    "main.38dff1dd.css.map": "/static/css/main.38dff1dd.css.map",
+    "main.57bc44ac.js.map": "/static/js/main.57bc44ac.js.map"
   },
   "entrypoints": [
-    "static/css/main.8e923b89.css",
-    "static/js/main.231afb4d.js"
+    "static/css/main.38dff1dd.css",
+    "static/js/main.57bc44ac.js"
   ]
 }
