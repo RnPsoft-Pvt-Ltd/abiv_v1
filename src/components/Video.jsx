@@ -53,7 +53,7 @@ const Video = () => {
     const [hasPermission, setHasPermission] = useState(false);
     const [signup,issignup]=useState(false);
   const [error, setError] = useState(null);
-  cosnt [credits, setcredits]=useState(100);
+  const [credits, setcredits]=useState(100);
   const requestMicrophoneAccess = async () => {
     try {
       // Request access to the microphone
