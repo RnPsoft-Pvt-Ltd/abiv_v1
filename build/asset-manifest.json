@@ -1,18 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.38dff1dd.css",
-    "main.js": "/static/js/main.57bc44ac.js",
+    "main.css": "/static/css/main.0bb655a8.css",
+    "main.js": "/static/js/main.485a49d7.js",
     "static/media/alter.mp4": "/static/media/alter.6bdcd6d7e2ca00e1a193.mp4",
     "static/media/animation1.mp4": "/static/media/animation1.822682eceaab764833fc.mp4",
     "static/media/video.mp4": "/static/media/video.f6fd00ae9e702e2499d2.mp4",
     "static/media/gif.gif": "/static/media/gif.8966f900766fbadbb482.gif",
     "static/media/bg_music1.mp3": "/static/media/bg_music1.288063e962d81388decb.mp3",
     "static/media/bg_music.mp3": "/static/media/bg_music.4f9a3fc45705e831f8b1.mp3",
+    "static/media/YourAudioFile.wav": "/static/media/YourAudioFile.ff15e1cbf7445e96fdfa.wav",
     "static/media/MLBOOK.pdf": "/static/media/MLBOOK.3ee65e6cb5549dc2e965.pdf",
     "static/media/Galaxy Motion Background Video [HD] ~ FREE.webm": "/static/media/Galaxy Motion Background Video [HD] ~ FREE.a049109ab1b693f6271a.webm",
     "static/media/robot.png": "/static/media/robot.d6e7245ac35ebeda6ce5.png",
     "static/media/doubt_anim.mp4": "/static/media/doubt_anim.7e13ced628dc316015b1.mp4",
-    "static/media/welcome.mp4": "/static/media/welcome.2a1f590d01bc158d65cb.mp4",
+    "static/media/Ellipse 3 (1).png": "/static/media/Ellipse 3 (1).ab898e7512c0d130378c.png",
+    "static/media/welcome.mp4": "/static/media/welcome.7780a78d211595f9d714.mp4",
+    "static/media/welcome1.mp4": "/static/media/welcome1.2a1f590d01bc158d65cb.mp4",
+    "static/media/Ellipse 2 (1).png": "/static/media/Ellipse 2 (1).13077f1de7ce3f47f191.png",
     "static/media/Ellipse 2.png": "/static/media/Ellipse 2.c61dfe9741cf851d5a53.png",
     "static/media/mcq.mp3": "/static/media/mcq.4d43bd3f9e110daa9005.mp3",
     "static/media/Doubt.mp4": "/static/media/Doubt.a1ec4de89dc0b84ac5d5.mp4",
@@ -28,21 +32,27 @@
     "static/media/Ellipse 5.png": "/static/media/Ellipse 5.a9c2c72bb386b1a3b8ab.png",
     "static/media/NoProfile.jpg": "/static/media/NoProfile.0e3b855ef882c3d2ddfc.jpg",
     "static/media/Ellipse 1.png": "/static/media/Ellipse 1.cce2836ec60a0b567e11.png",
+    "static/media/Tick Tick.png": "/static/media/Tick Tick.7828d0cb31b81917ac70.png",
     "static/media/chat-icon.png": "/static/media/chat-icon.0c47f2d0b6e3b5a526f7.png",
     "static/media/success.png": "/static/media/success.837d8d85dea4f73d4273.png",
     "static/media/error.png": "/static/media/error.1f4d8c2ab7c1a17a50e0.png",
     "static/media/isometric view of man working online.png": "/static/media/isometric view of man working online.38689ac337d50434aa0b.png",
+    "static/media/Ellipse 4 (1).png": "/static/media/Ellipse 4 (1).763820af40860a33bcc4.png",
     "static/media/young people brainstorming.png": "/static/media/young people brainstorming.9e96dea948925fddb76d.png",
     "static/media/alert.png": "/static/media/alert.83c8c718efce27324df7.png",
     "static/media/Teacher in empty classroom throwing her hands up.png": "/static/media/Teacher in empty classroom throwing her hands up.3f3ac55e42238be79f88.png",
+    "static/media/job.png": "/static/media/job.be369b8fcb15fc6f4930.png",
+    "static/media/nocamera.webp": "/static/media/nocamera.ae6f5d4a7e584d0e4a69.webp",
     "static/media/inbox.svg": "/static/media/inbox.dc3955a8ab8d3088d81f3ee122d6bcf1.svg",
+    "static/media/Scan.svg": "/static/media/Scan.fc7a2b5a2a5af22c592b3090277adb9b.svg",
+    "static/media/Upload.svg": "/static/media/Upload.9c63aa700688052693b8c77beb848cd2.svg",
     "index.html": "/index.html",
     "static/media/bell.svg": "/static/media/bell.f59aa6bf805db4267977064fa4461f91.svg",
-    "main.38dff1dd.css.map": "/static/css/main.38dff1dd.css.map",
-    "main.57bc44ac.js.map": "/static/js/main.57bc44ac.js.map"
+    "main.0bb655a8.css.map": "/static/css/main.0bb655a8.css.map",
+    "main.485a49d7.js.map": "/static/js/main.485a49d7.js.map"
   },
   "entrypoints": [
-    "static/css/main.38dff1dd.css",
-    "static/js/main.57bc44ac.js"
+    "static/css/main.0bb655a8.css",
+    "static/js/main.485a49d7.js"
   ]
 }
