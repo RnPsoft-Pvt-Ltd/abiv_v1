@@ -1,0 +1,237 @@
+
+.trial {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #000080, #000000);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  text-align: center;
+  color: white;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.h1h {
+  width: 1163px;
+height: 87px;
+top: 81px;
+left: 138px;
+gap: 0px;
+opacity: 0px;
+font-family: "Poppins";
+font-size: 55px;
+font-weight: 800;
+line-height: 86.96px;
+letter-spacing: -1.3936381340026855px;
+text-align: center;
+color: #fff;
+margin-bottom: 20px;
+}
+
+.Qoutline{width: 1154px;
+  height: 709px;
+  
+  border-radius: 40px;
+  background: #6374AFCC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.question-answer-box {
+  width: 1084px;
+  height: 666px;
+  top: 210px;
+  left: 177px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 37.57px;
+  box-shadow: 0px 5px 15px #00000080;
+}
+
+.question-box{
+  width: 542px;
+  height: 666px;
+  display: flex;
+  border-top-left-radius: 37.57px;
+  border-bottom-left-radius: 37.57px;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  position: relative; 
+  border-right: 1px solid #4C60A5;
+  
+} 
+
+.questionlabel{
+width: 543px;
+height: 78px;
+top: 210px;
+left: 177px;
+gap: 0px;
+border-radius: 37.57px 0px 0px 0px;
+opacity: 0px;
+background-color: #010B78;
+padding: 20px;
+padding-left: 40px;
+color: #FFFFFFE0;
+font-family: Jost;
+font-size: 28.67px;
+font-weight: 600;
+line-height: 33.09px;
+text-align: left;
+}
+
+
+.answerlabel{
+  width: 543px;
+  height: 78px;
+  top: 210px;
+  left: 177px;
+  gap: 0px;
+  border-radius: 0px 37.57px 0px 0px;
+  opacity: 0px;
+  background-color: #010B78;
+  padding: 20px;
+  padding-left: 40px;
+  color: #FFFFFFE0;
+  font-family: Jost;
+  font-size: 28.67px;
+  font-weight: 600;
+  line-height: 33.09px;
+  text-align: left;
+  }
+
+.p11{
+  width: 257px;
+  height: 45px;
+  top: 226px;
+  left: 219px;
+  gap: 0px;
+  opacity: 0px;
+  
+
+} 
+.answer-box {
+  width: 542px;
+  height: 666px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  border-bottom-right-radius: 37.57px;
+  border-top-right-radius: 37.57px;
+  border-top-left-radius: 37.57px;
+  border-bottom-left-radius: 37.57px;
+  
+}
+
+.questiontextarea{
+  border-bottom: 1px solid #573CFF;
+}
+
+
+
+textarea {
+  width: 100%;
+  height: 545px;
+  padding: 15px;
+  padding-left: 30px;
+font-family: Advent Pro;
+font-size: 20px;
+font-style: italic;
+font-weight: 100;
+line-height: 33.09px;
+text-align: left;
+border: none;
+resize: none;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #573CFF;
+}
+
+textarea:hover {  
+  border-color:#573CFF;
+}
+
+.symbols {
+  
+  background-color: white;
+  margin-left: 35px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 5px;
+  
+
+}
+
+.symbols button {
+  margin-left: 4px;
+  background-color: #ffffff;
+  border: none;
+  color: #333;
+  font-size: 1.2em;
+  padding: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.symbols button:hover {
+  background-color: #ddd;
+  transform: scale(1.02);
+}
+
+.proceed-button {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  gap: 10px;
+  background: #0875F7;
+  box-shadow: 0px 4.6px 4.6px 0px hsla(0, 0%, 0%, 0.251);
+  color: white;
+  border: none;
+  font-family: "Poppins";
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 50px;
+  margin-bottom: 35px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 169px;
+  height: 68px;
+  border-radius: 11.51px;
+  
+}
+
+
+.proceed-button:hover {
+  background-color: #573CFF;
+  transform: scale(1.05); /* Slight scale-up animation */
+} 
+.playlogo{
+  margin-left: 23px;}
+
+@media (max-width: 768px) {
+  .Qoutline {
+    width: 90%;
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Qoutline {
+    width: 80%;
+    height: 100px;
+  }
+}

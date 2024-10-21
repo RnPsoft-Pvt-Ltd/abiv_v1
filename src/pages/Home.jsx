@@ -12,14 +12,14 @@ import Footer from '../components/footer/Footer';
 import Header from '../components/Header'
 import PricingTable from '../components/Pricing/Pricing';
 import Page8 from '../components/Page8';
+import Page9 from '../components/Page9'
 import Layout from '../components/layout';
-
 const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(!localStorage.getItem('auth-token'))navigate('/LoginSignUP')
-          
+        document.body.style.overflowX = "hidden";
+      
         const handleScrollToPage3 = () => {
             const page3Element = document.getElementById('page3');
             if (page3Element) {
@@ -31,6 +31,8 @@ const Home = () => {
 
         return () => {
             window.removeEventListener('scrollToPage3', handleScrollToPage3);
+            document.body.style.overflowX = "auto";
+
         };
     }, []);
 
@@ -39,6 +41,8 @@ const Home = () => {
         <Page1 />
         <Page2 id="page2"/>
         <Page3 id="page3" />
+        <Page9/>
+
         <Page4 />
         <Page5 />
         <Page6 />

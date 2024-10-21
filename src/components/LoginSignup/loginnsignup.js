@@ -51,7 +51,7 @@ const LoginSignUp = () => {
     if (responseData.success) {
       localStorage.setItem("auth-token", responseData.token);
       localStorage.setItem("user-data",formInput)
-      window.location.replace("/home");
+      window.location.replace("/");
     } else {
       setSignUpError(responseData.error);
     }
@@ -73,7 +73,7 @@ const LoginSignUp = () => {
     if (responseData.success) {
       localStorage.setItem("auth-token", responseData.token);
       localStorage.setItem("user-data",formInput)
-      window.location.replace("/home");
+      window.location.replace("/");
     } else {
       console.log(responseData);
       setLoginError(responseData.error);

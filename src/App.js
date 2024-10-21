@@ -11,7 +11,15 @@ import Home from './pages/Home';
 import SettingPage from './pages/SettingPage';
 import PricingPage from './pages/PricingPage';
 import UserStats from './pages/UserStats';
-
+import SignUp from './components/LoginSignup2/SignUp';
+import OtpConfirm from './components/OtpConfirm/OtpConfirm';
+import Otp from './components/Otp/Otp';
+import Numericals from './components/numericals'
+import Interview from './pages/Interview.jsx'
+import Session from './pages/Session.jsx'
+import Uploads from './pages/upload.jsx';
+import Qna from './pages/Qna.jsx'
+import Attend from './pages/upload1.jsx'
 const App = () => {
   return (
     <BrowserRouter>
@@ -19,14 +27,22 @@ const App = () => {
       <Route element={<Private />}>
         <Route path="/video" element={<VideoPage />} />
         <Route path='/pricing' element={<PricingPage/>} />
+        <Route path='/numericals' element={<Numericals/>} />
         <Route path='/doubt' element={<DoubtPage/>} />
         <Route path='/demo' element={<DemoPage/>} />
         <Route path='/home' element={<Home/>} />
         <Route path='/setting' element={<SettingPage/>} />
         <Route path='/stats' element={<UserStats />} />
-
+        <Route path='/interview' element={<Interview/>}/>
+        <Route path='/session' element ={<Session/>}/>
+        <Route path='/uploads' element={<Uploads/>}/>
+        <Route path='/qna' element={<Qna/>}/>
+        <Route path='/attend' element={<Attend/>}/>
       </Route>
+      <Route path="/signup" element={<SignUp />} />
+        <Route path="/otpconfirm" element={<OtpConfirm />} />
         <Route path="/" element={<Home/>} />
+        <Route path="/otp" element={<Otp />} />
         <Route path="/LoginSignUP" element={<LoginSignUp />} />
         <Route path="/forget" element={<ForgetPassword />} />
       </Routes>

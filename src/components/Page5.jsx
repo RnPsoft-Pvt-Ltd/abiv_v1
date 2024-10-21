@@ -5,7 +5,7 @@ import img3 from '../assets/Rectangle 6695.png'
 
 const Page5 = () => {
   return (
-    <section className="bg-gradient-to-b from-[#000D3F] to-black text-white py-12">
+    <section className="bg-gradient-to-b from-[#000D3F] w-full to-black text-white py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold">Why ABIV</h1>
         <p className="text-lg font-light mt-4 mx-5">

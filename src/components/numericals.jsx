@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Video_Robot from "../assets/video_robot.png"
 import video from "../assets/video.mp4"
-import { Circle, CircleX, CircleArrowLeft, CircleCheck } from 'lucide-react';
+import { Circle, CircleX, CircleArrowLeft, CircleCheck, TextCursorInput } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MLBOOK from "../assets/MLBOOK.pdf"
 import { useLocation } from 'react-router-dom';
@@ -16,6 +16,8 @@ import bg_music1 from './bg_music1.mp3'
 import mcq from './mcq.mp3'
 import Login from './LoginSignup2/LoginSignup2'
 import SignUp from './LoginSignup2/SignUp';
+import './numcericals.css'
+import audiofile from './YourAudioFile.wav'
 import './styles.css';
 const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
@@ -38,6 +40,11 @@ const Video = () => {
     const [transition, setTransition] = useState(false);
     const [capt1,setcapt1]=useState(false)
     const [dbt,setdbt]= useState(0)
+    const [currentText, setCurrentText] = useState('');
+    const [textIndex, setTextIndex] = useState(0);
+    const [charIndex, setCharIndex] = useState(0);
+    const [displayTexts, setDisplayTexts] = useState([]); // Store an array of text segments
+
     const [login,islogin]=useState(true)                         
     const [isVideoVisible, setIsVideoVisible] = useState(true);
     const [number,setnumber]=useState(1);
@@ -52,8 +59,49 @@ const Video = () => {
     const [appeared,setappeared]=useState(true)
     const [hasPermission, setHasPermission] = useState(false);
     const [signup,issignup]=useState(false);
+    const [displayText, setDisplayText] = useState('');
+    const [index, setIndex] = useState(0);
+    const preRef = useRef(null);
+    const [largeState,setlarge]=useState('');
   const [error, setError] = useState(null);
-  cosnt [credits, setcredits]=useState(100);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  const scrollTimeoutRef = useRef(null);
+console.log(location)
+const {to_write}=location.state||{}
+const towrite=to_write
+const data2 = JSON.parse(localStorage.getItem('numericals'))
+useEffect(() => {
+    const handleScroll = () => {
+      const pre = preRef.current;
+      const isNearBottom =
+        pre.scrollHeight - pre.scrollTop <= pre.clientHeight + 50;
+
+      if (isNearBottom) {
+        setIsUserScrolling(false); 
+      } else {
+        setIsUserScrolling(true); 
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsUserScrolling(false); 
+        }, 1000); 
+      }
+    };
+
+    const pre = preRef.current;
+    if (pre) pre.addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (pre) pre.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isUserScrolling && preRef.current) {
+      preRef.current.scrollTop = preRef.current.scrollHeight;
+    }
+  }, [displayText, isUserScrolling]);
+
   const requestMicrophoneAccess = async () => {
     try {
       // Request access to the microphone
@@ -68,6 +116,51 @@ const Video = () => {
       console.error('Microphone access error:', err);
     }
   };
+  useEffect(() => {
+    if (textIndex < data2.length) {
+      if (data2[textIndex].decoration.includes("box")) {
+        // Add the whole text to the displayTexts array at once
+        setDisplayTexts(prev => [
+          ...prev,
+          {
+            text: data2[textIndex].text,
+            decoration: data2[textIndex].decoration
+          }
+        ]);
+        setTextIndex(textIndex + 1); // Move to the next text segment
+        setCharIndex(0); // Reset character index for the new text item
+        return;
+      }
+
+      if (charIndex < data2[textIndex].text.length) {
+        audioRef.current?.play();
+
+        const timer = setTimeout(() => {
+          // Temporarily show the larger character effect
+          const nextChar = data2[textIndex].text[charIndex];
+          setlarge(nextChar);
+
+          setTimeout(() => {
+            setlarge('');
+            // Append the current character with its styles
+            setDisplayTexts(prev => [
+              ...prev,
+              {
+                text: nextChar,
+                decoration: data2[textIndex].decoration
+              }
+            ]);
+            setCharIndex(charIndex + 1);
+          }, 65);
+        }, 70);
+        return () => clearTimeout(timer);
+      } else {
+        // Move to the next text item
+        setTextIndex(textIndex + 1);
+        setCharIndex(0); // Reset character index for the new text item
+      }
+    }
+  }, [charIndex, textIndex]);
 let durations={}
 const [dura,setdura]=useState({})
     const[act,setact]=useState(false)
@@ -247,6 +340,7 @@ const [dura,setdura]=useState({})
     const fetchresult2=async(i,f,t)=>{
       const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
       const headers = {
+        // Add any required headers here
         'Content-Type': 'application/json',
         // 'Authorization': 'Bearer your-token-here',
       };
@@ -346,18 +440,6 @@ const [dura,setdura]=useState({})
       }
     };
     useEffect(() => {
-      setTimeout(()=>{
-        if(!localStorage.getItem('auth-token')){islogin(false);
-        videoRef1.current.pause();
-        videoRef2.current.pause();
-        }
-        },10000)
-      requestMicrophoneAccess()
-      localStorage.setItem('capt','0');
-      localStorage.setItem('capt1','0');
-      localStorage.setItem('duration','0');
-      localStorage.setItem('appeared','0')
-      localStorage.setItem('mcq','0');
       loadScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
       .then(() => {
         console.log('jQuery loaded successfully');
@@ -365,11 +447,6 @@ const [dura,setdura]=useState({})
       .catch((error) => {
         console.error(error.message);
       });
-      console.log(data)
-     
-      localStorage.setItem('b', JSON.stringify(0));
-      localStorage.setItem('animation', null);
-      localStorage.setItem('teacher', null);
 
     
     }, []); // Empty dependency array means this effect runs only once on mount
@@ -393,7 +470,17 @@ const [dura,setdura]=useState({})
           fullscreenBtn.removeEventListener('click', toggleFullScreen);
         }
       };
+        const handleTimeUpdate = () => {
+            if (videoRef.current.currentTime >= quizInterval) {
+                setShowQuiz(true);
+                videoRef.current.pause();
+            }
+        };
 
+      
+
+        return () => {
+        };
     }, [quizInterval]);
     const closeQuiz = async() => {
         setShowQuiz(false);
@@ -566,9 +653,8 @@ recognition.onstart = function() {
 
     recognition.onerror = function(event) {
         console.error('Recognition error:', event.error);
-        // Restart recognition unless there's a specific error that should stop it
         if (isRecognizing) {
-          recognition.stop();  // Stop recognition if it's still running
+          recognition.stop();  
       }
       setTimeout(()=>{recognition.start()},1000)
       
@@ -590,17 +676,18 @@ recognition.onstart = function() {
             setact(true)
             setstopper(true)
           }else{
+           
           fetchresult2(2,flagged,transcript)
+          
+         
           console.log(capt1)
           checkDoubtAvailability(1)
           }
           console.log('b value is'+localStorage.getItem('b'))
         };
-      
         recognition.start();
       }
       else if(1==1 ){
-        
         setnumber(number+1)
         setdoubt(false)
         setIsVideoVisible(true)
@@ -637,6 +724,9 @@ recognition.onstart = function() {
             videoRef2.current.play()
             videoRef2.current.muted=false;
           }
+        
+
+         
          setcaption('If you have any doubts, feel free to ask !')
       }else{
         
@@ -686,105 +776,33 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
                             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{quizToggle ? 'On' : 'Off'}</span>
                         </label>
                     </div>
-                   
-                      
-                    
                <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
-               
-
       {/* Video 1 */}
-      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
-        <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
-          {caption}
-        </div>
-        <video
-          ref={videoRef1}
-          onClick={handlePlayPause}
-          className="object-cover w-full h-full"
-          onTransitionEnd={() => setAnimating(false)}
-          style={{ transition: 'transform 1s' }}
-          onTimeUpdate={() => {
-            if (Math.floor(videoRef2.current.duration - videoRef2.current.currentTime) === 3) {
-              setTransition(true);
-            }
-            if(act && (Number(localStorage.getItem('b'))!=0 && stop &&!videoRef1.current.src.includes('doubt_anim')) )
-            setcaption(dura[`${Math.round(videoRef2.current.currentTime)}`]);
-          }}
-          onEnded={isDoubt ? Endgame : () => {}}
-          controls
-        >
-          <source src={startinganim} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[100%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
+      <div className="chalkboard">
+      <pre className="typing">
+        {displayTexts.map((item, index) => (
+          <span key={index} className={item.decoration.join(' ')}>
+            {item.text}
+          </span>
+        ))}
+        <span style={{ fontSize: '40px' }}>
+          <b>{largeState}</b>
+        </span>
+        {largeState.length > 0 ? ' 🖋️' : null}
+      </pre>
+    </div>
       </div>
 
-      {/* Video 2 */}
-      <div className={`sm:flex items-right ${isVideoVisible?'w-[40%]':'w-[0%]'} h-full hidden ${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""}  ml-30 justify-end`} style={{ backgroundColor: '#086c7c' }}>
-        <video
-          ref={videoRef2}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={!isDoubt ? Endgame : () => {}}
-          controls
-          className="object-cover w-full h-full flex justify-end"
-          style={{ backgroundColor: '#086c7c', display: isVideoVisible ? 'block' : 'none' }}
-        >
-          <source src={video9} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-
-        {/* Loader */}
-        
-      </div>
+     
       {!isLoaded || l1 ? (
           <div className={`absolute inset-0 flex items-center justify-center z-10 ${!isLoaded || l1 ?"":"blur-sm"}`}>
             <img src="https://i.giphy.com/6ae7c7HIAkRkEnkoAc.webp" className="loadingimg" alt="Loading..." />
             <p className='font-semibold font-[jost]'>Thinking...</p>
-            <audio autoPlay src={bg_music} loop></audio>
+            <audio autoPlay src={bg_music} ></audio>
           </div>
          
         ) : null}
-      {/* Quiz and controls */}
-      {showQuiz && ( <div className="absolute inset-0 flex items-center justify-center z-30">
-          <Quiz onClose={closeQuiz} />
-        </div>)}
-        {!login && !signup &&(
-          <div className="absolute inset-0 flex items-center justify-center z-30">
-          <Login islogin={islogin} issignup={issignup}></Login>
-          </div>
-          )}
-          {!login && signup && (
-            <div className="absolute inset-0 flex items-center justify-center z-30">
-<SignUp/>
-            </div>
-          )}
-
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity duration-300 "
-      onMouseEnter={() => {
-        const captions = document.querySelectorAll('.caption');
-        captions.forEach(caption => caption.style.bottom = '60px');
-    }}
-    style={{zIndex:'4'}}
-    onMouseLeave={() => {
-        const captions = document.querySelectorAll('.caption');
-        captions.forEach(caption => caption.style.bottom = '12px');
-    }}
-      >
-        <button onClick={handlePlayPause} className="text-white">
-          {isPlaying ? 'Pause' : 'Play'}
-        </button>
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={videoProgress}
-          onChange={handleSliderChange}
-          className="w-full mx-4"
-        />
-        <span className="text-white">
-          {videoProgress === 100 ? 'LIVE' : `-${Math.floor((videoRef2.current.duration - videoRef2.current.currentTime) / 60).toString().padStart(2, '0')}:${Math.floor((videoRef2.current.duration - videoRef2.current.currentTime) % 60).toString().padStart(2, '0')}`}
-        </span>
-      </div>
-
       <style>{`
         video::-webkit-media-controls {
           display: none !important;
@@ -794,7 +812,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
             </div>
            
             <i id="fullscreen-toggle-btn" className="text-white cursor-pointer">[Fullscreen]</i>
-            <audio ref={audioRef} src={bg_music} loop />
+            <audio ref={audioRef} src='https://abiv.rnpsoft.com/stream/YourAudioFile.wav' autoPlay loop />
 <audio ref={audioRef1} src={mcq}/>
             <p className='w-[80%] md:w-[50%] text-sm  lg:text-xl  text-center mt-5'>YOU CAN EASILY DOWNLOAD THE NOTES FROM BELOW AND 
             ALSO ASK DOUBTS IF YOU HAVE ANY.</p>
@@ -806,4 +824,5 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
         </div>
     )
 }
+
 export default Video;

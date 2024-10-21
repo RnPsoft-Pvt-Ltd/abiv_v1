@@ -162,6 +162,7 @@ const Header = () => {
                 />
             </svg>
         </div>
+        {!localStorage.getItem('auth-token')?(<ul><li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={()=>{navigate('/LoginSignUP')}}>Login/Sign Up</li></ul>):(
                         <ul>
                             <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={toggleRecentlyViewed}>
                                 Recently viewed content
@@ -175,7 +176,7 @@ const Header = () => {
                             <li onClick={logOut} className="py-3 px-4 hover:bg-gray-700 hover:text-white cursor-pointer">
                                 Logout
                             </li>
-                        </ul>
+                        </ul>)}
                     </div>
                 }
                 {showRecentlyViewed &&
