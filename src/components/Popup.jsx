@@ -88,7 +88,11 @@ const Popup = ({filedata}) => {
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
       localStorage.setItem('teacher', null);
-                nav("/video", { state: { flagged },sessionid:{random} });   
+      localStorage.setItem('language',language)
+      localStorage.setItem('isTheory','False');
+      localStorage.setItem('isDoubt','False');
+localStorage.setItem('isCheck','True')
+                nav("/video", { state: { flagged,lngSelected },sessionid:{random}});   
             }
         }
         

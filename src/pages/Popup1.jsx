@@ -40,6 +40,7 @@ const Popup = ({filedata}) => {
           formData.append('file', file);
       formData.append('text',data);
       formData.append('sessionid','question')
+      formData.append('pattern',localStorage.getItem('pattern'))
           const response = await axios.post('https://abiv.rnpsoft.com/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -84,7 +85,9 @@ const Popup = ({filedata}) => {
             else if (loader) {
                 setLoader(false);
                 handleUpload("True")
-                nav("/session", { state: { flagged },sessionid:{random} });   
+                if(localStorage.getItem('pattern').includes('false'))
+                nav("/session", { state: { flagged },sessionid:{random} });
+               else nav("/mcqexam")   
             }
         }
         

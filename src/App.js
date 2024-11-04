@@ -8,6 +8,7 @@ import VideoPage from './pages/VideoPage';
 import DoubtPage from './pages/DoubtPage';
 import DemoPage from './pages/DemoPage';
 import Home from './pages/Home';
+import TextUploaf from './components/textuploaf.jsx'
 import SettingPage from './pages/SettingPage';
 import PricingPage from './pages/PricingPage';
 import UserStats from './pages/UserStats';
@@ -20,6 +21,9 @@ import Session from './pages/Session.jsx'
 import Uploads from './pages/upload.jsx';
 import Qna from './pages/Qna.jsx'
 import Attend from './pages/upload1.jsx'
+import Selectscreen from './pages/selectscreen.jsx'
+import Mcqexam from './pages/mcqexam'
+import Reportcard from './pages/reportcard.jsx'
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,6 +35,7 @@ const App = () => {
         <Route path='/doubt' element={<DoubtPage/>} />
         <Route path='/demo' element={<DemoPage/>} />
         <Route path='/home' element={<Home/>} />
+        <Route path='/textupload' element={<TextUploaf/>}/>
         <Route path='/setting' element={<SettingPage/>} />
         <Route path='/stats' element={<UserStats />} />
         <Route path='/interview' element={<Interview/>}/>
@@ -38,7 +43,10 @@ const App = () => {
         <Route path='/uploads' element={<Uploads/>}/>
         <Route path='/qna' element={<Qna/>}/>
         <Route path='/attend' element={<Attend/>}/>
-      </Route>
+        <Route path='/selectscreen' element={<Selectscreen/>}/>
+        <Route path='/mcqexam' element={<Mcqexam/>}/>
+        <Route path='/report' element={<Reportcard/>}/>
+       </Route>
       <Route path="/signup" element={<SignUp />} />
         <Route path="/otpconfirm" element={<OtpConfirm />} />
         <Route path="/" element={<Home/>} />

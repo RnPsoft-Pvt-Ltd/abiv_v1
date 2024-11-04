@@ -21,6 +21,7 @@
     "face-api.js": "^0.22.2",
     "fortawesome": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "jspdf": "^2.5.2",
     "lucide-react": "^0.397.0",
     "mui-one-time-password-input": "^2.0.3",
     "pdf-to-text": "^0.0.7",

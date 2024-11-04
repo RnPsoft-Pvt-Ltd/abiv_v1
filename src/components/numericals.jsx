@@ -18,6 +18,7 @@ import Login from './LoginSignup2/LoginSignup2'
 import SignUp from './LoginSignup2/SignUp';
 import './numcericals.css'
 import audiofile from './YourAudioFile.wav'
+import Blackboard from './Blackboard.png'
 import './styles.css';
 const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
@@ -74,8 +75,7 @@ useEffect(() => {
     const handleScroll = () => {
       const pre = preRef.current;
       const isNearBottom =
-        pre.scrollHeight - pre.scrollTop <= pre.clientHeight + 50;
-
+        pre.scrollHeight - pre.scrollTop <= pre.clientHeight -50;
       if (isNearBottom) {
         setIsUserScrolling(false); 
       } else {
@@ -97,10 +97,10 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    if (!isUserScrolling && preRef.current) {
+    
       preRef.current.scrollTop = preRef.current.scrollHeight;
-    }
-  }, [displayText, isUserScrolling]);
+    
+  }, [displayText,isUserScrolling]);
 
   const requestMicrophoneAccess = async () => {
     try {
@@ -150,6 +150,7 @@ useEffect(() => {
                 decoration: data2[textIndex].decoration
               }
             ]);
+            if(!isUserScrolling)preRef.current.scrollTop = preRef.current.scrollHeight;
             setCharIndex(charIndex + 1);
           }, 65);
         }, 70);
@@ -400,10 +401,10 @@ const [dura,setdura]=useState({})
         } else {
           console.error('Failed to fetch data:', response1.statusText);
         }}catch(error){}}
-      
+
     const { flagged } = location.state || {};
     const { random } =  location.sessionid || {};
-    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
+    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
     let b=0
     const fetchVideo = async (i) => {
         
@@ -768,19 +769,13 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
     return (
         <div className='video-page-background w-screen  flex flex-col justify-center items-center text-white font-[Montserrat] '>
             <h1 className='md:text-5xl text-[22px] text-center lg:text-justify  mt-5 font-semibold font-[jost]'>{topic==''?``:`TOPIC NAME: ${topic}`}</h1>
-            <div className='relative flex items-center absolute right-[-380px] top-[-10px]'>
-                        <span className='text-sm mr-2'>Quiz:</span>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                            <input type="checkbox" className="sr-only peer" checked={quizToggle} onChange={toggleQuiz} />
-                            <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{quizToggle ? 'On' : 'Off'}</span>
-                        </label>
-                    </div>
+        
                <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
       {/* Video 1 */}
-      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[100%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
+      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[87%]':'w-[100%]'} h-[100%] flex justify-center items-center`}   style={{ backgroundImage: `url(${Blackboard})`, backgroundSize: 'contain', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'  }}
+      >
       <div className="chalkboard">
-      <pre className="typing">
+      <pre className="typing" ref={preRef}>
         {displayTexts.map((item, index) => (
           <span key={index} className={item.decoration.join(' ')}>
             {item.text}
@@ -812,7 +807,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
             </div>
            
             <i id="fullscreen-toggle-btn" className="text-white cursor-pointer">[Fullscreen]</i>
-            <audio ref={audioRef} src='https://abiv.rnpsoft.com/stream/YourAudioFile.wav' autoPlay loop />
+            <audio ref={audioRef} src='https://abiv.rnpsoft.com/stream/YourAudioFile.wav' autoPlay  />
 <audio ref={audioRef1} src={mcq}/>
             <p className='w-[80%] md:w-[50%] text-sm  lg:text-xl  text-center mt-5'>YOU CAN EASILY DOWNLOAD THE NOTES FROM BELOW AND 
             ALSO ASK DOUBTS IF YOU HAVE ANY.</p>

@@ -8,22 +8,29 @@ import { FaSearch } from "react-icons/fa";
 import { VscSend } from "react-icons/vsc";
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk'
 import axios from 'axios';
+import jsPDF from "jspdf";
 const Page3 = ({ id }) => {
   const mathExplanationInstruction = `
-Find the solution like a real teacher, explain like it happens in books. Use human readable format like 3x^2+2x+3/5=0 strictly
-`;
+In less than 300 words describe and explain the topic
+  `;
+  const generatePDF = (text) => {
+    const doc = new jsPDF();
+
+    // Add some text to the PDF
+    doc.text(text, 10, 10);
+
+    // Save the PDF
+    doc.save("File1.pdf");
+  };
 
 const mathToWordExplanationInstruction = `
 replace each symbol like + - √ or any symbol including brackets with their English word. I am building a system which can't understand them.
 `;
 
-async function explainMath(question, answer = "", prompt = mathExplanationInstruction) {
+async function explaincontext(question, prompt = mathExplanationInstruction) {
   console.log('triggered')
-  if (answer.trim() === "") {
-      answer = "I don't know the solution, guide me to reach the solution.";
-  }
-
-  const sentences = `Question : ${question}\nAnswer : ${answer}`;
+  
+  const sentences = `Topic : ${question}`;
 
   const url = 'https://abiv.rnpsoft.com/prompt';
   const payload = {
@@ -200,13 +207,9 @@ async function mathToWords(sentences, prompt = mathToWordExplanationInstruction)
 
                   <div className="w-[48px] h-[47px] rounded-[7px] bg-[#272b34] ml-4 flex items-center justify-center hover:cursor-pointer">
                     <VscSend className="fill-white w-[24.35px] h-[24.35px]" onClick={async()=>{
-                      console.log(text)
-                      
-                      let c=await explainMath(text);
-                      let d=await mathToWords(c);
-                      console.log(c);
-                      console.log(d);
-navigate('/numericals', { state: { to_speak: d, to_write: c } });
+                      let c=await explaincontext(text);
+                      console.log(c)
+                      navigate('/textupload',{ state: { c } })
                       }} />
                   </div>
 

@@ -1,7 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.0bb655a8.css",
-    "main.js": "/static/js/main.485a49d7.js",
+    "main.css": "/static/css/main.3d06bc46.css",
+    "main.js": "/static/js/main.c53769d1.js",
+    "static/js/239.7800b28c.chunk.js": "/static/js/239.7800b28c.chunk.js",
+    "static/js/213.6fb05288.chunk.js": "/static/js/213.6fb05288.chunk.js",
+    "static/js/455.4d05b9ab.chunk.js": "/static/js/455.4d05b9ab.chunk.js",
     "static/media/alter.mp4": "/static/media/alter.6bdcd6d7e2ca00e1a193.mp4",
     "static/media/animation1.mp4": "/static/media/animation1.822682eceaab764833fc.mp4",
     "static/media/video.mp4": "/static/media/video.f6fd00ae9e702e2499d2.mp4",
@@ -13,14 +16,18 @@
     "static/media/Galaxy Motion Background Video [HD] ~ FREE.webm": "/static/media/Galaxy Motion Background Video [HD] ~ FREE.a049109ab1b693f6271a.webm",
     "static/media/robot.png": "/static/media/robot.d6e7245ac35ebeda6ce5.png",
     "static/media/doubt_anim.mp4": "/static/media/doubt_anim.7e13ced628dc316015b1.mp4",
-    "static/media/Ellipse 3 (1).png": "/static/media/Ellipse 3 (1).ab898e7512c0d130378c.png",
+    "static/media/intro_hindi.mp4": "/static/media/intro_hindi.4934d58dafea69395f2f.mp4",
     "static/media/welcome.mp4": "/static/media/welcome.7780a78d211595f9d714.mp4",
+    "static/media/Ellipse 3 (1).png": "/static/media/Ellipse 3 (1).ab898e7512c0d130378c.png",
     "static/media/welcome1.mp4": "/static/media/welcome1.2a1f590d01bc158d65cb.mp4",
     "static/media/Ellipse 2 (1).png": "/static/media/Ellipse 2 (1).13077f1de7ce3f47f191.png",
     "static/media/Ellipse 2.png": "/static/media/Ellipse 2.c61dfe9741cf851d5a53.png",
     "static/media/mcq.mp3": "/static/media/mcq.4d43bd3f9e110daa9005.mp3",
-    "static/media/Doubt.mp4": "/static/media/Doubt.a1ec4de89dc0b84ac5d5.mp4",
+    "static/media/neerja.wav": "/static/media/neerja.5ebfd557b64eeb4fdb86.wav",
+    "static/media/Doubt1.mp4": "/static/media/Doubt1.56dedb8f424dcf826af8.mp4",
+    "static/media/thinking.gif": "/static/media/thinking.0e4aa8366a902ea70201.gif",
     "static/media/Ellipse 3.png": "/static/media/Ellipse 3.bbadefc79a222a19719e.png",
+    "static/media/Doubt.mp4": "/static/media/Doubt.c05b5d00abd9d460230a.mp4",
     "static/media/Rectangle 6695.png": "/static/media/Rectangle 6695.9192b931d948b26a81ac.png",
     "static/media/Rectangle 6696.png": "/static/media/Rectangle 6696.b203954331933ed7204c.png",
     "static/media/Rectangle 6697.png": "/static/media/Rectangle 6697.86ff654096174fbf890a.png",
@@ -31,6 +38,7 @@
     "static/media/illustration.png": "/static/media/illustration.6ddb5126b59679e4e80d.png",
     "static/media/Ellipse 5.png": "/static/media/Ellipse 5.a9c2c72bb386b1a3b8ab.png",
     "static/media/NoProfile.jpg": "/static/media/NoProfile.0e3b855ef882c3d2ddfc.jpg",
+    "static/media/Blackboard.png": "/static/media/Blackboard.2ddfb50c80d941f7ca7e.png",
     "static/media/Ellipse 1.png": "/static/media/Ellipse 1.cce2836ec60a0b567e11.png",
     "static/media/Tick Tick.png": "/static/media/Tick Tick.7828d0cb31b81917ac70.png",
     "static/media/chat-icon.png": "/static/media/chat-icon.0c47f2d0b6e3b5a526f7.png",
@@ -42,17 +50,21 @@
     "static/media/alert.png": "/static/media/alert.83c8c718efce27324df7.png",
     "static/media/Teacher in empty classroom throwing her hands up.png": "/static/media/Teacher in empty classroom throwing her hands up.3f3ac55e42238be79f88.png",
     "static/media/job.png": "/static/media/job.be369b8fcb15fc6f4930.png",
+    "static/media/logo2.png": "/static/media/logo2.b863558d8fcb57cb6fb5.png",
     "static/media/nocamera.webp": "/static/media/nocamera.ae6f5d4a7e584d0e4a69.webp",
     "static/media/inbox.svg": "/static/media/inbox.dc3955a8ab8d3088d81f3ee122d6bcf1.svg",
     "static/media/Scan.svg": "/static/media/Scan.fc7a2b5a2a5af22c592b3090277adb9b.svg",
     "static/media/Upload.svg": "/static/media/Upload.9c63aa700688052693b8c77beb848cd2.svg",
     "index.html": "/index.html",
     "static/media/bell.svg": "/static/media/bell.f59aa6bf805db4267977064fa4461f91.svg",
-    "main.0bb655a8.css.map": "/static/css/main.0bb655a8.css.map",
-    "main.485a49d7.js.map": "/static/js/main.485a49d7.js.map"
+    "main.3d06bc46.css.map": "/static/css/main.3d06bc46.css.map",
+    "main.c53769d1.js.map": "/static/js/main.c53769d1.js.map",
+    "239.7800b28c.chunk.js.map": "/static/js/239.7800b28c.chunk.js.map",
+    "213.6fb05288.chunk.js.map": "/static/js/213.6fb05288.chunk.js.map",
+    "455.4d05b9ab.chunk.js.map": "/static/js/455.4d05b9ab.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0bb655a8.css",
-    "static/js/main.485a49d7.js"
+    "static/css/main.3d06bc46.css",
+    "static/js/main.c53769d1.js"
   ]
 }

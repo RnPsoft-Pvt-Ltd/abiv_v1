@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import UploadSVG from './Upload.svg'
 import ScanSVG from './Scan.svg'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 const TimerDiv = () => {
   const initialTime = 3 * 60 * 60;
+  const nav = useNavigate();
   const [timeLeft, setTimeLeft] = useState(initialTime);
   useEffect(() => {
       if (timeLeft > 0) {
@@ -32,9 +35,14 @@ const TimerDiv = () => {
           </button>
                 <button className="upload justify-center items-center">
                         <img src={ScanSVG} alt="scan-icon"></img>  
+                        <input 
+        type="file" 
+        className="absolute inset-0 opacity-0 cursor-pointer" 
+         // Replace with your handler
+    />
                 </button>
                 </div>
-                <button className="submit">Submit and <br />Exit</button>
+                <button className="submit" onClick={()=>{nav('/report')}}>Submit and <br />Exit</button>
       </div>
   );
 };

@@ -8,7 +8,9 @@ import { FaSearch } from "react-icons/fa";
 import { VscSend } from "react-icons/vsc";
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk'
 import axios from 'axios';
+
 const Page3 = ({ id }) => {
+  
   const mathExplanationInstruction = `
 Find the solution like a real teacher, explain like it happens in books. Use human readable format like 3x^2+2x+3/5=0 strictly
 `;
@@ -102,7 +104,10 @@ async function mathToWords(sentences, prompt = mathToWordExplanationInstruction)
 
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
+useEffect(()=>{
+  const {mcq}=location.state||{};
+  console.log(mcq)
+},[])
   const location = useLocation();
     const scrollToPage3 = location.state?.scrollToPage3;
 
@@ -158,44 +163,6 @@ async function mathToWords(sentences, prompt = mathToWordExplanationInstruction)
 
             </div>
 
-          </div>
-    
-
-        
-          <div className="w-[800px] h-[150px] flex flex-col items-center gap-y-8">
-            <p className=" w-[540px] h-[26px] font-poppins font-bold text-2xl leading-[26px] text-center text-white flex gap-x-2 mt-4" >
-              You can also <span className="text-[#3015d6]" > search </span> for your answers below
-              <BsStars className="fill-[#3015d6] rotate-[135deg]" />
-            </p>
-
-            <div className="w-[750px] h-[77px] bg-custom-grad flex items-center justify-center rounded-[20px] border-none">
-              <div className=" w-[745px] h-[72px] rounded-[20px] border-none p-[8.93px_30.9px_8.93px_30.9px] bg-[#1c1f28] shadow-[0px_0px_66.67px_10.99px_#3E2487]
-                flex justify-center items-center">
-
-                <div className="w-[550px] h-[48px] flex justify-between items-center relative">
-
-
-                  <FaSearch className="fill-white w-[34px] h-[34px] cursor-pointer" />
-                  <BsStars className="fill-white absolute top-0 left-6 -rotate-90 ml-1" />
-
-                  <input type="text" className=" ml-9 w-[500px] bg-transparent placeholder:w-[190px] text-2xl placeholder:h-[34px] placeholder:font-poppins
-                        placeholder:font-normal placeholder:text-[25px] placeholder:leading-[36px] placeholder:text-white outline-none text-white font-poppins font-normal" placeholder="Paste Your Text" value={text} onChange={handelText} />
-
-                  <div className="w-[48px] h-[47px] rounded-[7px] bg-[#272b34] ml-4 flex items-center justify-center hover:cursor-pointer">
-                    <VscSend className="fill-white w-[24.35px] h-[24.35px]" onClick={async()=>{
-                      console.log(text)
-                      
-                      let c=await explainMath(text);
-                      let d=await mathToWords(c);
-                      console.log(c);
-                      console.log(d);
-navigate('/numericals', { state: { to_speak: d, to_write: c } });
-                      }} />
-                  </div>
-
-                </div>
-              </div>
-            </div>
           </div>
         </>
 

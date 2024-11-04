@@ -10,19 +10,31 @@ import axios from 'axios'
 import startinganim from './animation1.mp4'
 import video9 from './welcome.mp4'
 import doubtteacher from './Doubt.mp4'
+import doubtteacher1 from './Doubt1.mp4'
 import doubtanim from './doubt_anim.mp4'
 import bg_music from './bg_music.mp3'
 import bg_music1 from './bg_music1.mp3'
 import mcq from './mcq.mp3'
 import Login from './LoginSignup2/LoginSignup2'
 import SignUp from './LoginSignup2/SignUp';
+import Thinking from './thinking.gif'
+import './numcericals.css'
+import hindiwelcome from './intro_hindi.mp4'
+import DownloadNotes from './download.png';  
+import AskDoubts from './ask.png'; 
+import Audi from './neerja.wav'
 import './styles.css';
+import Blackboard from './Blackboard.png';
 const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
   const[isRecognizing,setRec]=useState(false)
+  const preRef =useRef(null)
+
     const [videoSrc, setVideoSrc] = useState('null');
     const [isDoubt,setdoubt]=useState(false);
     const [isLoaded,setLoaded]=useState(true)
+    const [showTransition, setShowTransition] = useState(false);
+    const [showTransition1,setShowTransition1]=useState(false)
     const [teacher,setTeacher]=useState('null')
     const [stop,setstopper]=useState(true)
     const audioRef = useRef(null);
@@ -54,9 +66,111 @@ const Video = () => {
     const [signup,issignup]=useState(false);
   const [error, setError] = useState(null);
   const [credits, setcredits]=useState(100);
+  const [istheory,settheory]=useState(false);
+  const [displayText,setDisplayText]=useState('')
+  const [index,setIndex]=useState(0)
+  const [text1,settext1]=useState('')
+  const [language, setLanguage] = useState(false);
+  const [isUserScrolling, setIsUserScrolling] = useState(false);
+  const scrollTimeoutRef = useRef(null);
+  useEffect(() => {
+    const handleScroll = () => {
+      const pre = preRef.current;
+      const isNearBottom =
+        pre.scrollHeight - pre.scrollTop <= pre.clientHeight -50;
+      if (isNearBottom) {
+        setIsUserScrolling(false); 
+      } else {
+        setIsUserScrolling(true); 
+        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+        scrollTimeoutRef.current = setTimeout(() => {
+          setIsUserScrolling(false); 
+        }, 1000); 
+      }
+    };
+
+    const pre = preRef.current;
+    if (pre) pre.addEventListener("scroll", handleScroll);
+
+    return () => {
+      if (pre) pre.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    
+      preRef.current.scrollTop = preRef.current.scrollHeight;
+    
+  }, [displayText,isUserScrolling]);
+  useEffect(() => {
+    localStorage.setItem('isCheck','True')
+    localStorage.setItem("isTheory",'False')
+    const { lngSelected } = location.state || {};
+    setLanguage(lngSelected);
+  }, [location.lngSelected])
+const interval=10000;
+const applyTransition1 = () => {
+  if (videoRef.current) {
+    videoRef.current.pause();
+  }
+  setShowTransition1(true);
+
+  setTimeout(() => {
+    setShowTransition1(false);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  }, 2000); // Duration of transition
+};
+    const applyTransition = () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+      setShowTransition(true);
+
+      setTimeout(() => {
+        setShowTransition(false);
+        if (videoRef.current) {
+          videoRef.current.play();
+        }
+      }, 2000); // Duration of transition
+    };
+  const tileCount = 10;
+  const xtiles = [];
+  for (let i = 0; i < tileCount * tileCount; i++) {
+    const row = Math.floor(i / tileCount);
+    const col = i % tileCount;
+    const delay = (row + col) * 50;
+    xtiles.push(
+      <div
+        key={i}
+        className={`xmosaic-tile ${showTransition1 ? "show" : ""}`}
+        style={{ transitionDelay: `${delay}ms` }}
+      ></div>
+    );
+  }
+  const tiles = [];
+  const centerX = Math.floor(tileCount / 2);
+  const centerY = Math.floor(tileCount / 2);
+
+  for (let i = 0; i < tileCount * tileCount; i++) {
+    const row = Math.floor(i / tileCount);
+    const col = i % tileCount;
+    const distanceFromCenter = Math.sqrt(
+      Math.pow(row - centerX, 2) + Math.pow(col - centerY, 2)
+    );
+    const delay = distanceFromCenter * 80; // Ripple delay
+    tiles.push(
+      <div
+        key={i}
+        className={`mosaic-tile ${showTransition ? "show" : ""}`}
+        style={{ transitionDelay: `${delay}ms` }}
+      ></div>
+    );
+  }
   const requestMicrophoneAccess = async () => {
     try {
-      // Request access to the microphone
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       setHasPermission(true);
       console.log('Microphone access granted');
@@ -126,14 +240,18 @@ const [dura,setdura]=useState({})
     const Quiz = ({ onClose }) => {
       console.log(data[flagged][9][number-2]);
       console.log(data[flagged][9])
-     
+      let count=1;
+     try{
       let c=data[flagged][9][number-2].split('Option')[4].trim().split('Correct')[1].replace(',','.').replace('\n','')
-      let count=counter(c)
+      count=counter(c)
       if (!typeof count === 'number'){
         if(data[flagged][9][number-2].split('Option').length>4){
           count=counter(data[flagged][9][number-2].split('Option')[5])
         }
       }
+    }catch{
+        
+    }
       let option1,option2,option3,option4;
       try{
         option1=data[flagged][9][number-2].split('Option')[1].trim().replace(',','.').replace('\n','')
@@ -309,8 +427,41 @@ const [dura,setdura]=useState({})
       
     const { flagged } = location.state || {};
     const { random } =  location.sessionid || {};
-    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',0,0,[],0,[],0,'',[],''],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
+    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
     let b=0
+    const fetchresult3=async()=>{
+      const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
+      const headers = {
+        // Add any required headers here
+        'Content-Type': 'application/json',
+        // 'Authorization': 'Bearer your-token-here',
+      };
+      const response1 = await axios.post(fetchUrl, {}, { headers });
+      if (response1.status === 200) {
+        const result = response1.data;
+        console.log('Received Data:', result.receivedData);
+        let c=result.receivedData;
+        setData(c);
+        return c[flagged][14].length
+      }else{return -1}
+
+  }
+  const fetchresult4=async(i)=>{
+    const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
+    const headers = {
+      // Add any required headers here
+      'Content-Type': 'application/json',
+      // 'Authorization': 'Bearer your-token-here',
+    };
+    const response1 = await axios.post(fetchUrl, {}, { headers });
+    if (response1.status === 200) {
+      const result = response1.data;
+      console.log('Received Data:', result.receivedData);
+      let c=result.receivedData;
+      return c[flagged][14][i]
+    }else{return -1}
+
+}
     const fetchVideo = async (i) => {
         
       try {
@@ -346,6 +497,8 @@ const [dura,setdura]=useState({})
       }
     };
     useEffect(() => {
+      localStorage.setItem('index',0)
+
       setTimeout(()=>{
         if(!localStorage.getItem('auth-token')){islogin(false);
         videoRef1.current.pause();
@@ -380,6 +533,8 @@ const [dura,setdura]=useState({})
     const [isPlaying, setIsPlaying] = useState(false);
     
     useEffect(() => {
+      console.log(language)
+      localStorage.setItem('text1','')
       if (videoRef1.current) {
         // Set the volume to 50% (0.5)
         videoRef1.current.volume = 0.2;
@@ -408,15 +563,15 @@ const [dura,setdura]=useState({})
         videoRef2.current.muted=false;
     };
     const handlePlayPause = () => {
-      setIsPlaying(prev => !prev); // Toggle play/pause state
+      setIsPlaying(prev => !prev); 
       if (isPlaying) {
-        videoRef1.current.pause(); // Pause the second video
+        videoRef1.current.pause(); 
         videoRef2.current.pause();
         audioRef.current.pause();
         audioRef.current.volume=0.8
 
       } else {
-        videoRef2.current.play(); // Play the second video
+        videoRef2.current.play(); 
         videoRef1.current.play();
         audioRef.current.volume=0.8
         audioRef.current.play();
@@ -466,7 +621,7 @@ setl1(true)
           let url2=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
           videoRef1.current.src=url1
           videoRef2.current.src=url2
-          videoRef1.current.currentTime=ca
+          videoRef1.current.currentTime=ca2
           videoRef2.current.currentTime=ca2
           videoRef1.current.load()
           videoRef2.current.load()
@@ -541,10 +696,7 @@ setl1(true)
       }
     };
     const Endgame=async()=>{
-      videoRef1.current.pause()
-      console.log(videoRef1.current.duration)
-      audioRef.current.pause()
-      console.log(b)
+      
       setact(false)
       console.log(data[flagged][6])
       
@@ -618,12 +770,10 @@ recognition.onstart = function() {
         setstopper(true)
         if(Number(localStorage.getItem('b'))%3==0 && quizToggle){
           localStorage.setItem('appeared','1')
-          
           localStorage.setItem('b',JSON.parse(Number(localStorage.getItem('b')))-1)
           setcapt1(true)
           if(Number(localStorage.getItem('mcq'))==0){
           setcaption('If you have any doubts feel free to ask')
-          localStorage.setItem('capt1',Number(Math.round(videoRef2.current.duration)))  
           setShowQuiz(true)
           setnumber(number+1)
           localStorage.setItem('mcq','1');
@@ -639,13 +789,11 @@ recognition.onstart = function() {
           }
          setcaption('If you have any doubts, feel free to ask !')
       }else{
-        
         localStorage.setItem('appeared','0')
         console.log('avail'+Number(localStorage.getItem('duration')))
 
         setact(true)
        
-        localStorage.setItem('capt1',Number(Math.round(videoRef2.current.duration)))  
         
 checkVideoAvailability(Number(localStorage.getItem('b')))
 }}      
@@ -674,6 +822,41 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
         //link.click();
         //document.body.removeChild(link);
     };
+    const applying=async()=>{
+      if(Number(localStorage.getItem('b'))!=0){
+        localStorage.setItem('capt1',Number(Math.round(videoRef2.current.duration)))  
+      }
+      const interval2=setInterval(async()=>{
+        console.log(await fetchresult3())
+
+        if(await fetchresult3()>=Number(localStorage.getItem('b'))+1){
+          console.log("value of c is"+localStorage.getItem('b'));
+          console.log(data[0][14][localStorage.getItem('b')])
+          localStorage.setItem('text1',' '+await fetchresult4(localStorage.getItem('b')))
+        clearInterval(interval2)
+      localStorage.setItem('isTheory','True')
+    const interval=setInterval(()=>{
+      if(localStorage.getItem('index')<localStorage.getItem('text1').length && localStorage.getItem('isTheory').includes('True')){
+        console.log("Value of b is "+ localStorage.getItem('b'))
+        
+        setDisplayText(prevDisplayText => prevDisplayText + localStorage.getItem('text1')[Number(localStorage.getItem('index'))]);
+        if(!isUserScrolling)preRef.current.scrollTop = preRef.current.scrollHeight;
+
+        localStorage.setItem('index',Number(localStorage.getItem('index'))+1)
+        }else{
+          clearInterval(interval)
+        localStorage.setItem('isTheory','False')
+        settheory(false)
+        setDisplayText('')
+        localStorage.setItem('index',0)
+        let b=localStorage.getItem('b')
+        const t=setTimeout(()=>{
+          if(b==localStorage.getItem('b'))
+          Endgame()
+        },3000)
+      }
+    },150)}
+  },1000)}
 
     return (
         <div className='video-page-background w-screen  flex flex-col justify-center items-center text-white font-[Montserrat] '>
@@ -688,47 +871,62 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
                     </div>
                    
                       
-                    
-               <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
+               {(!localStorage.getItem('isTheory').includes('True') && !localStorage.getItem('isDoubt').includes('True')) &&     
+               <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}style={
+
+          {
+            border: '2px solid #fff',borderRadius: '15px',padding:'3px'
+          }
+               }>
                
 
       {/* Video 1 */}
-      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
+      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: '#181c64'}}>
         <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
           {caption}
         </div>
+        <div className="mosaic-container object-cover w-full h-[500px]">
         <video
           ref={videoRef1}
           onClick={handlePlayPause}
           className="object-cover w-full h-full"
           onTransitionEnd={() => setAnimating(false)}
-          style={{ transition: 'transform 1s' }}
+          style={{ transition: 'transform 1s',marginLeft:'10px' }}
           onTimeUpdate={() => {
             if (Math.floor(videoRef2.current.duration - videoRef2.current.currentTime) === 3) {
               setTransition(true);
             }
             if(act && (Number(localStorage.getItem('b'))!=0 && stop &&!videoRef1.current.src.includes('doubt_anim')) )
-            setcaption(dura[`${Math.round(videoRef2.current.currentTime)}`]);
+            if(caption!=dura[`${Math.round(videoRef2.current.currentTime)}`]){
+              let transitions=[applyTransition,applyTransition1]
+              let randomIndex = Math.floor(Math.random() * transitions.length);
+              transitions[randomIndex]();
+
+            }
+                        setcaption(dura[`${Math.round(videoRef2.current.currentTime)}`]);
           }}
-          onEnded={isDoubt ? Endgame : () => {}}
           controls
         >
           <source src={startinganim} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
+        <div className={`tiles ${showTransition ? "visible" : ""}`}>{tiles}</div>
+        <div className={`xtiles ${showTransition1 ? "visible" : ""}`}>{xtiles}</div>
+
+        </div>
       </div>
 
       {/* Video 2 */}
-      <div className={`sm:flex items-right ${isVideoVisible?'w-[40%]':'w-[0%]'} h-full hidden ${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""}  ml-30 justify-end`} style={{ backgroundColor: '#086c7c' }}>
+      <div className={`sm:flex items-right ${isVideoVisible?'w-[40%]':'w-[0%]'} h-full hidden ${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""}  ml-30 justify-end`} style={{ backgroundColor: '#181c64' }}>
         <video
           ref={videoRef2}
           onTimeUpdate={handleTimeUpdate}
-          onEnded={!isDoubt ? Endgame : () => {}}
+          onEnded={applying}
           controls
           className="object-cover w-full h-full flex justify-end"
           style={{ backgroundColor: '#086c7c', display: isVideoVisible ? 'block' : 'none' }}
         >
-          <source src={video9} type="video/mp4" />
+          <source src={localStorage.getItem('language').includes('False')?video9:hindiwelcome} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
@@ -792,17 +990,218 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
       `}</style>
     
             </div>
-           
+}{
+  (localStorage.getItem('isTheory').includes('True') && !localStorage.getItem('isDoubt').includes('True')) &&
+  <image className="flex h-[520px] w-[1000px] relative" ref={containerRef} >
+
+  <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[100%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
+
+  <div className="chalkboard">
+    <pre className="typing" ref={preRef}>
+  <p>{displayText}</p>
+  </pre>
+ 
+</div>
+</div>
+{Number(localStorage.getItem('b'))==0&&
+  <audio src={Audi} autoPlay/>
+}
+</image>
+}  {localStorage.getItem('isDoubt').includes('True') &&     
+               <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
+               
+
+      {/* Video 1 */}
+      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: '#006a7d' }}>
+        <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
+          {caption}
+        </div>
+        <div className="mosaic-container object-cover w-full h-[500px]">
+        <video
+          ref={videoRef1}
+          onClick={handlePlayPause}
+          className="object-cover w-full h-full"
+          onTransitionEnd={() => setAnimating(false)}
+          style={{ transition: 'transform 1s',marginLeft:'10px' }}
+          controls
+          autoPlay
+        
+        >
+          <source src={doubtanim} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className={`tiles ${showTransition ? "visible" : ""}`}>{tiles}</div>
+        <div className={`xtiles ${showTransition1 ? "visible" : ""}`}>{xtiles}</div>
+
+        </div>
+      </div>
+
+      {/* Video 2 */}
+      <div className={`sm:flex items-right ${isVideoVisible?'w-[40%]':'w-[0%]'} h-full hidden ${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""}  ml-30 justify-end`} style={{ backgroundColor: '#086c7c' }}>
+        <video
+          ref={videoRef2}
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={()=>{
+            console.log(videoRef1.current.src)
+            console.log('hi')
+            if(localStorage.getItem('isCheck').includes('True')){
+              localStorage.setItem('isCheck','False')
+              setcaption('If you have any doubts feel free to ask')
+              setstopper(false)
+              const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+              const recognition = new SpeechRecognition();
+              recognition.continuous = true;
+              recognition.lang = 'en-US';
+             
+      recognition.onstart = function() {
+        setRec(true)
+          console.log("Recognition started.");
+      };
+      
+      
+          recognition.onerror = function(event) {
+              console.error('Recognition error:', event.error);
+              // Restart recognition unless there's a specific error that should stop it
+              if (isRecognizing) {
+                recognition.stop();  // Stop recognition if it's still running
+            }
+            setTimeout(()=>{recognition.start()},1000)
+            
+              
+          };
+              recognition.onresult = function(event) {
+                setRec(false)
+                const result = event.results[event.results.length - 1];
+                const transcript = result[0].transcript.trim();
+                console.log("transcript")
+                console.log(transcript);
+                console.log("transcript:", transcript);
+                recognition.stop();
+                if(transcript.includes('no')){
+                  localStorage.setItem('mcq','0');
+                  localStorage.setItem('b',Number(localStorage.getItem('b'))+1)
+                  checkVideoAvailability(Number(localStorage.getItem('b')))
+                  setcapt1(true)
+                  setact(true)
+                  setstopper(true)
+                }else{
+                  if(localStorage.getItem('isCheck').includes('notknown')){
+                    localStorage.setItem('isDoubt','False');
+                    localStorage.setItem('isCheck','True');
+                  }else{
+                localStorage.setItem('isCheck','notknown')
+                fetchresult2(2,flagged,transcript)
+                console.log(capt1)
+                checkDoubtAvailability(1)
+                }}
+                console.log('b value is'+localStorage.getItem('b'))
+              };
+            
+              recognition.start();
+            }else{
+              localStorage.setItem('isDoubt','True')
+            }
+          }}
+          autoPlay
+          controls
+          className="object-cover w-full h-full flex justify-end"
+          style={{ backgroundColor: '#086c7c', display: isVideoVisible ? 'block' : 'none' }}
+        >
+          <source src={localStorage.getItem('language').includes('False')?doubtteacher:doubtteacher1} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Loader */}
+        
+      </div>
+      {!isLoaded || l1 ? (
+          <div className={`absolute inset-0 flex items-center justify-center z-10 ${!isLoaded || l1 ?"":"blur-sm"}`}>
+            <img src={Thinking} className="loadingimg" alt="Loading..." />
+            <p className='font-semibold font-[jost]'>Thinking...</p>
+            <audio autoPlay src={bg_music} loop></audio>
+          </div>
+         
+        ) : null}
+      {/* Quiz and controls */}
+      {showQuiz && ( <div className="absolute inset-0 flex items-center justify-center z-30">
+          <Quiz onClose={closeQuiz} />
+        </div>)}
+        {!login && !signup &&(
+          <div className="absolute inset-0 flex items-center justify-center z-30">
+          <Login islogin={islogin} issignup={issignup}></Login>
+          </div>
+          )}
+          {!login && signup && (
+            <div className="absolute inset-0 flex items-center justify-center z-30">
+<SignUp/>
+            </div>
+          )}
+
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-black bg-opacity-50 flex items-center justify-between opacity-0 hover:opacity-100 transition-opacity duration-300 "
+      onMouseEnter={() => {
+        const captions = document.querySelectorAll('.caption');
+        captions.forEach(caption => caption.style.bottom = '60px');
+    }}
+    style={{zIndex:'4'}}
+    onMouseLeave={() => {
+        const captions = document.querySelectorAll('.caption');
+        captions.forEach(caption => caption.style.bottom = '12px');
+    }}
+      >
+        <button onClick={handlePlayPause} className="text-white">
+          {isPlaying ? 'Pause' : 'Play'}
+        </button>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={videoProgress}
+          onChange={handleSliderChange}
+          className="w-full mx-4"
+        />
+        <span className="text-white">
+          {videoProgress === 100 ? 'LIVE' : `-${Math.floor((videoRef2.current.duration - videoRef2.current.currentTime) / 60).toString().padStart(2, '0')}:${Math.floor((videoRef2.current.duration - videoRef2.current.currentTime) % 60).toString().padStart(2, '0')}`}
+        </span>
+      </div>
+
+      <style>{`
+        video::-webkit-media-controls {
+          display: none !important;
+        }
+      `}</style>
+    
+            </div>
+}
             <i id="fullscreen-toggle-btn" className="text-white cursor-pointer">[Fullscreen]</i>
+            <div className="flex justify-center space-x-14 top-2 mb-8">
+      <div className="text-center ">
+           <a href="/path-to-file/notes.pdf" download="notes.pdf ">
+              <button className="hover:shadow-[0_0_30px_rgba(255,255,0,0.7)] transition-all duration-300" onClick={downloadNotes}>
+                  <img
+                  src={DownloadNotes}
+                  alt="Download Notes"
+                  className="h-[12vh] mb-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]"
+                  />
+              </button>
+           </a>
+      </div>
+
+        <div className="text-center ">
+                <button
+                   onClick={() =>{localStorage.setItem('isDoubt','True')}} 
+                   className="hover:shadow-[0_0_30px_rgba(255,255,0,0.7)] transition-all duration-300"
+                >
+                <img
+                    src={AskDoubts}
+                    alt="3D Mode"
+                    className="h-[12vh] mb-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.8)]"
+                />
+                 </button>
+        </div>
+        </div>
             <audio ref={audioRef} src={bg_music} loop />
 <audio ref={audioRef1} src={mcq}/>
-            <p className='w-[80%] md:w-[50%] text-sm  lg:text-xl  text-center mt-5'>YOU CAN EASILY DOWNLOAD THE NOTES FROM BELOW AND 
-            ALSO ASK DOUBTS IF YOU HAVE ANY.</p>
-            <div className='flex justify-evenly w-full mt-5'>
-                <button className=' border border-white p-[7px] md:p-2 rounded-3xl text-[9px] md:text-sm hover:border-2'>FEEDBACK</button>
-                <button onClick={downloadNotes} className=' border border-white p-[7px] md:p-2 rounded-3xl text-[9px] md:text-sm hover:border-2'>DOWNLOAD NOTES</button>
-                <Link target='_blank' to="/doubt" className=' border border-white p-[7px] md:p-2 rounded-3xl text-[9px] md:text-sm hover:border-2'>ASK DOUBTS</Link>
-            </div>
+          
         </div>
     )
 }

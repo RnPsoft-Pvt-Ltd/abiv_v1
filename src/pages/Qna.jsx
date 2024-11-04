@@ -23,14 +23,13 @@ now heres another thing return the answer in a format which makes easy for stude
 here's a sample example
 to solve the quadratic equation
 <underline>3x2+5x2+9=0</underline> we can use the formla
-<box>-b+-...</box>
+<red>-b+-...</red>
 now as we continue
 </star><bold>Note:</bold> The solution contains
 
 this way, the attributes you have are
 1. underline - to underline any thing important
 2. bold - to focus emphasis on certain keywords
-3. box - to overline important observations
 4. star - to note certain things - it has just one closing bracket
 5. red - to focus certain
 `

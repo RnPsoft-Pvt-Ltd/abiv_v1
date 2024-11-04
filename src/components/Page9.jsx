@@ -20,7 +20,7 @@ const Component = () => {
             src={job}
           />
         </div>
-        <div className="absolute w-[389px] h-[377px] top-[222px] left-[679px] bg-[#010b78] rounded-[10.83px] border border-dashed border-white shadow-[0px_4px_4px_#00000040]"  onClick={()=>navigate('/attend')}style={{cursor:"pointer"}}>
+        <div className="absolute w-[389px] h-[377px] top-[222px] left-[679px] bg-[#010b78] rounded-[10.83px] border border-dashed border-white shadow-[0px_4px_4px_#00000040]"  onClick={()=>navigate('/selectscreen')}style={{cursor:"pointer"}}>
           <div className="absolute h-[30px] top-[315px] left-16 [font-family:'Poppins',Helvetica] font-semibold text-white text-[40px] text-center tracking-[0] leading-[30px] whitespace-nowrap">
             Attend Exam
           </div>
