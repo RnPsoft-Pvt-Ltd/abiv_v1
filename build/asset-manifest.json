@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.3d06bc46.css",
-    "main.js": "/static/js/main.c53769d1.js",
+    "main.js": "/static/js/main.b633e0f9.js",
     "static/js/239.7800b28c.chunk.js": "/static/js/239.7800b28c.chunk.js",
     "static/js/213.6fb05288.chunk.js": "/static/js/213.6fb05288.chunk.js",
     "static/js/455.4d05b9ab.chunk.js": "/static/js/455.4d05b9ab.chunk.js",
@@ -18,8 +18,10 @@
     "static/media/doubt_anim.mp4": "/static/media/doubt_anim.7e13ced628dc316015b1.mp4",
     "static/media/intro_hindi.mp4": "/static/media/intro_hindi.4934d58dafea69395f2f.mp4",
     "static/media/welcome.mp4": "/static/media/welcome.7780a78d211595f9d714.mp4",
+    "static/media/thindi.mp4": "/static/media/thindi.a9ba46acd1c183cedd9d.mp4",
     "static/media/Ellipse 3 (1).png": "/static/media/Ellipse 3 (1).ab898e7512c0d130378c.png",
     "static/media/welcome1.mp4": "/static/media/welcome1.2a1f590d01bc158d65cb.mp4",
+    "static/media/tenglish.mp4": "/static/media/tenglish.6ebdadd2b4e091e3f0c1.mp4",
     "static/media/Ellipse 2 (1).png": "/static/media/Ellipse 2 (1).13077f1de7ce3f47f191.png",
     "static/media/Ellipse 2.png": "/static/media/Ellipse 2.c61dfe9741cf851d5a53.png",
     "static/media/mcq.mp3": "/static/media/mcq.4d43bd3f9e110daa9005.mp3",
@@ -58,13 +60,13 @@
     "index.html": "/index.html",
     "static/media/bell.svg": "/static/media/bell.f59aa6bf805db4267977064fa4461f91.svg",
     "main.3d06bc46.css.map": "/static/css/main.3d06bc46.css.map",
-    "main.c53769d1.js.map": "/static/js/main.c53769d1.js.map",
+    "main.b633e0f9.js.map": "/static/js/main.b633e0f9.js.map",
     "239.7800b28c.chunk.js.map": "/static/js/239.7800b28c.chunk.js.map",
     "213.6fb05288.chunk.js.map": "/static/js/213.6fb05288.chunk.js.map",
     "455.4d05b9ab.chunk.js.map": "/static/js/455.4d05b9ab.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3d06bc46.css",
-    "static/js/main.c53769d1.js"
+    "static/js/main.b633e0f9.js"
   ]
 }

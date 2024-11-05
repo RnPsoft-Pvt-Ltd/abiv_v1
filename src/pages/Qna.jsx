@@ -156,16 +156,14 @@ function App1() {
         p[i].text=p[i].text+'\n\n'
        }
        localStorage.setItem('numericals',JSON.stringify(p))
-       s=s.replace("<box>","").replace("</box>","").replace("<underline>","").replace("</underline>","").replace("<bold>","").replace("</bold>","")
+       s=s.replace("<box>","").replace("</box>","").replace("<underline>","").replace("</underline>","").replace("<bold>","").replace("</bold>","").replace('/','divide').replace('*','multiple').replace('+','plus').replace('√','under root').replace('^','to the power')
        console.log('i passed here')
        let c =await callTTSApi(s);
        console.log(JSON.parse(solution1));
 setTimeout(()=>{nav('/numericals')},2000)
-       
        }}>
             <img src={logo} alt="Logo" className='playlogo'/>
             proceed</button>
-            
           </div>
         </div>
       </div>

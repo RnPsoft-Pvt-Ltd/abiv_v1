@@ -24,7 +24,9 @@ import DownloadNotes from './download.png';
 import AskDoubts from './ask.png'; 
 import Audi from './neerja.wav'
 import './styles.css';
-import Blackboard from './Blackboard.png';
+import thindi from './thindi.mp4'
+import tenglish from './tenglish.mp4'
+import Blackboard from './Blackboard.png'
 const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
   const[isRecognizing,setRec]=useState(false)
@@ -99,8 +101,9 @@ const Video = () => {
   }, []);
 
   useEffect(() => {
-    
+    if(preRef.current){try{
       preRef.current.scrollTop = preRef.current.scrollHeight;
+    }catch(e){}}
     
   }, [displayText,isUserScrolling]);
   useEffect(() => {
@@ -663,6 +666,7 @@ setl1(true)
 
     const checkDoubtAvailability = async (i) => {
       try {
+        
         fetchresult(1)
         const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`);
         if (response.data.available) {
@@ -838,10 +842,8 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
     const interval=setInterval(()=>{
       if(localStorage.getItem('index')<localStorage.getItem('text1').length && localStorage.getItem('isTheory').includes('True')){
         console.log("Value of b is "+ localStorage.getItem('b'))
-        
         setDisplayText(prevDisplayText => prevDisplayText + localStorage.getItem('text1')[Number(localStorage.getItem('index'))]);
         if(!isUserScrolling)preRef.current.scrollTop = preRef.current.scrollHeight;
-
         localStorage.setItem('index',Number(localStorage.getItem('index'))+1)
         }else{
           clearInterval(interval)
@@ -885,7 +887,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
         <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
           {caption}
         </div>
-        <div className="mosaic-container object-cover w-full h-[500px]">
+        <div className={`mosaic-container object-cover w-full ${isFullScreen?'h-full':'h-[500px]'}`}>
         <video
           ref={videoRef1}
           onClick={handlePlayPause}
@@ -1009,8 +1011,6 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
 </image>
 }  {localStorage.getItem('isDoubt').includes('True') &&     
                <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
-               
-
       {/* Video 1 */}
       <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: '#006a7d' }}>
         <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
@@ -1025,6 +1025,24 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
           style={{ transition: 'transform 1s',marginLeft:'10px' }}
           controls
           autoPlay
+          onEnded={()=>{
+            setdoubt(false)
+            if(isDoubt &&localStorage.getItem('isCheck').includes('notknown')){
+              setdoubt(false);
+              localStorage.setItem('isCheck','alpha');
+              console.log('appears')
+              setdoubt(false)
+              setIsVideoVisible(true)
+              setTimeout(()=>{
+              videoRef1.current.src=doubtanim
+              videoRef2.current.src=localStorage.getItem('language').includes('False')?tenglish:thindi;
+              videoRef1.current.load()
+              videoRef2.current.load()
+              videoRef2.current.muted=false
+              videoRef1.current.play()
+              videoRef2.current.play()
+            },2000)}
+          }}
         
         >
           <source src={doubtanim} type="video/mp4" />
@@ -1043,16 +1061,13 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
           onTimeUpdate={handleTimeUpdate}
           onEnded={()=>{
             console.log(videoRef1.current.src)
-            console.log('hi')
-            if(localStorage.getItem('isCheck').includes('True')){
-              localStorage.setItem('isCheck','False')
+            if(!isDoubt && localStorage.getItem('isCheck').includes('True')){
               setcaption('If you have any doubts feel free to ask')
               setstopper(false)
               const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
               const recognition = new SpeechRecognition();
               recognition.continuous = true;
               recognition.lang = 'en-US';
-             
       recognition.onstart = function() {
         setRec(true)
           console.log("Recognition started.");
@@ -1073,35 +1088,38 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
                 setRec(false)
                 const result = event.results[event.results.length - 1];
                 const transcript = result[0].transcript.trim();
-                console.log("transcript")
+                console.log("transcript");
                 console.log(transcript);
                 console.log("transcript:", transcript);
                 recognition.stop();
                 if(transcript.includes('no')){
                   localStorage.setItem('mcq','0');
                   localStorage.setItem('b',Number(localStorage.getItem('b'))+1)
+                  localStorage.setItem('isCheck','True')
+                  localStorage.setItem('isDoubt','False');
+                  setdoubt(false)
                   checkVideoAvailability(Number(localStorage.getItem('b')))
                   setcapt1(true)
                   setact(true)
                   setstopper(true)
                 }else{
-                  if(localStorage.getItem('isCheck').includes('notknown')){
+                  fetchresult2(2,flagged,transcript)
+                  console.log(capt1)
+                  localStorage.setItem('isCheck','notknown')
+                  checkDoubtAvailability(1)
+                }
+              }
+              recognition.start();
+            
+                  }else if(localStorage.getItem('isCheck').includes('alpha')){
                     localStorage.setItem('isDoubt','False');
                     localStorage.setItem('isCheck','True');
-                  }else{
-                localStorage.setItem('isCheck','notknown')
-                fetchresult2(2,flagged,transcript)
-                console.log(capt1)
-                checkDoubtAvailability(1)
-                }}
+                    setdoubt(false)
+                    checkVideoAvailability(Number(localStorage.getItem('b')));
+                    }
                 console.log('b value is'+localStorage.getItem('b'))
-              };
-            
-              recognition.start();
-            }else{
-              localStorage.setItem('isDoubt','True')
-            }
-          }}
+              }
+          }
           autoPlay
           controls
           className="object-cover w-full h-full flex justify-end"
