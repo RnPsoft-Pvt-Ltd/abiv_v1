@@ -77,6 +77,7 @@ const Popup = ({filedata}) => {
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
       localStorage.setItem('teacher', null);
+      localStorage.setItem('sessionid',random)
         const closeHandler = () => {
             if (closer) {
               setCloser(false);

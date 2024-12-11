@@ -10,7 +10,7 @@ import errorIcon from "../assets/error.png";
 import coin from "../assets/image 97.png";
 import { Link, useNavigate } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({setlogin}) => {
     const [toggle, setToggle] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
@@ -18,8 +18,20 @@ const Header = () => {
     const navigate = useNavigate();
     const profileRef = useRef(null);
     const recentlyViewedRef = useRef(null);
-
+    const [coins,setcoins]=useState(100);
+    const [keys,setkeys]=useState([]);
+    const [profileimg,setprofileimg]=useState(profile);
+    if(!localStorage.getItem('coins')){
+        localStorage.setItem('coins','100');
+            }
+           
     useEffect(() => {
+        if(!localStorage.getItem('coins')){
+            localStorage.setItem('coins','100');
+                }
+        
+                setcoins(Number(localStorage.getItem('coins')))
+        
         // Function to handle clicks outside of dropdowns
         const handleClickOutside = (event) => {
             if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -29,6 +41,7 @@ const Header = () => {
                 setShowRecentlyViewed(false);
             }
         };
+        
 
         // Attach event listener
         document.addEventListener('mousedown', handleClickOutside);
@@ -38,7 +51,7 @@ const Header = () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
+useEffect(()=>{setcoins(Number(localStorage.getItem('coins')))},[localStorage.getItem('coins')])
     const handelToggle = () => {
         setToggle(!toggle);
     };
@@ -65,20 +78,7 @@ const Header = () => {
 
     const logOut = async () => {
         localStorage.removeItem("auth-token");
-        try {
-            const response = await fetch('http://localhost:4000/logout', {
-                method: 'GET',
-                credentials: 'include' // Include cookies if using sessions
-            });
-
-            if (response.ok) {
-                navigate('/');
-            } else {
-                console.error('Logout failed');
-            }
-        } catch (error) {
-            console.error('An error occurred during logout', error);
-        }
+        localStorage.removeItem("user-data");
         navigate('/');
     };
 
@@ -118,11 +118,11 @@ const Header = () => {
                             <li className="py-4"><Link to="/pricing">Pricing</Link></li>
                             <li className="py-4"><Link to="/contact">Contact Us</Link></li>
                             <li className="hidden lg:flex items-center gap-2 px-3">
-                                <div className='border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-7 h-7 rounded-full' /></div><span className='text-[#EBB12B]'>100</span>
+                                <div className='border-1 border border-white rounded-full'><img src={coin} alt="Number 100" className='w-7 h-7 rounded-full' /></div><span className='text-[#EBB12B]'>{coins}</span>
                             </li>
                         </ul>
                         <div className='rounded-full cursor-pointer' onClick={toggleProfile}>
-                            <img src={profile} alt="Profile" className='h-10 w-10 p-1 rounded-full' />
+                            <img src={profileimg} alt="Profile" className='h-10 w-10 p-1 rounded-full' />
                         </div>
                     </div>
                     <div className='lg:hidden flex space-x-2'>
@@ -162,7 +162,7 @@ const Header = () => {
                 />
             </svg>
         </div>
-        {!localStorage.getItem('auth-token')?(<ul><li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={()=>{navigate('/LoginSignUP')}}>Login/Sign Up</li></ul>):(
+        {!localStorage.getItem('auth-token')?(<ul><li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={()=>{localStorage.setItem('loginactive','True');setlogin(true)}}>Login/Sign Up</li></ul>):(
                         <ul>
                             <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" onClick={toggleRecentlyViewed}>
                                 Recently viewed content
@@ -182,11 +182,11 @@ const Header = () => {
                 {showRecentlyViewed &&
                     <div ref={recentlyViewedRef} className="absolute right-0 mt-2 w-48 bg-[#1a1a1a] shadow-lg rounded-3xl z-20 text-center">
                         <ul>
-                            <li className="py-3 px-4 text-white">Recently viewed content</li>
-                            <li className="py-3 px-4 text-white">Recently viewed content</li>
-                            <li className="py-3 px-4 text-white">Recently viewed content</li>
-                            <li className="py-3 px-4 text-white">Recently viewed content</li>
-                            <li className="py-3 px-4 text-white">Recently viewed content</li>
+                            {keys.map((key) => (
+                                <li className="py-3 px-4 border-b border-gray-700 hover:bg-gray-700 hover:text-white cursor-pointer" key={key}>
+                                    {key}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 }

@@ -11,6 +11,7 @@ import startinganim from './animation1.mp4'
 import video9 from './welcome.mp4'
 import doubtteacher from './Doubt.mp4'
 import doubtteacher1 from './Doubt1.mp4'
+import Loader from './Loader'
 import doubtanim from './doubt_anim.mp4'
 import bg_music from './bg_music.mp3'
 import bg_music1 from './bg_music1.mp3'
@@ -31,7 +32,6 @@ const Video = () => {
   const [videoProgress, setVideoProgress] = useState(100);
   const[isRecognizing,setRec]=useState(false)
   const preRef =useRef(null)
-
     const [videoSrc, setVideoSrc] = useState('null');
     const [isDoubt,setdoubt]=useState(false);
     const [isLoaded,setLoaded]=useState(true)
@@ -49,6 +49,7 @@ const Video = () => {
     const videoRef2 = useRef(null);
     const audioRef1=useRef(null);
     const [topic,setTopic]=useState('');
+    const [userdata,setuserdata]=useState({});
     const [transition, setTransition] = useState(false);
     const [capt1,setcapt1]=useState(false)
     const [dbt,setdbt]= useState(0)
@@ -75,8 +76,30 @@ const Video = () => {
   const [language, setLanguage] = useState(false);
   const [isUserScrolling, setIsUserScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
+  const [isloaded,setloaded]=useState(true)
+  const [loading,setloading]=useState(true)
+  useEffect(()=>{
+    if(localStorage.getItem('auth-token')){
+      fetch("https://abiv.rnpsoft.com/fetchdata", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"},
+        body: JSON.stringify({email:JSON.parse(localStorage.getItem('user-data')).email})}
+     ).then(response => response.json())
+      .then(data => {
+        setuserdata(data.data)
+      })
+    }
+  },[])
+  useEffect(()=>{
+    setTimeout(()=>{
+      setloading(false)
+    },70000)
+  },[])
+
   useEffect(() => {
     const handleScroll = () => {
+      try{
       const pre = preRef.current;
       const isNearBottom =
         pre.scrollHeight - pre.scrollTop <= pre.clientHeight -50;
@@ -88,7 +111,7 @@ const Video = () => {
         scrollTimeoutRef.current = setTimeout(() => {
           setIsUserScrolling(false); 
         }, 1000); 
-      }
+      }}catch(c){}
     };
 
     const pre = preRef.current;
@@ -118,7 +141,6 @@ const applyTransition1 = () => {
     videoRef.current.pause();
   }
   setShowTransition1(true);
-
   setTimeout(() => {
     setShowTransition1(false);
     if (videoRef.current) {
@@ -209,27 +231,64 @@ const [dura,setdura]=useState({})
       }
     }
     const updateData = async (data1) => {
-      let updateUrl='https://abiv.rnpsoft.com/submit'
-      let headers={
+      const updateUrl = 'https://abiv.rnpsoft.com/submit';
+
+      const headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer YOUR_TOKEN'  // Replace with your headers
+        'Authorization': 'Bearer YOUR_TOKEN', // Replace 'YOUR_TOKEN' with your actual token
       };
+      
       try {
-        const response = await axios.post(updateUrl, data1, { headers });
-        if (response.status === 200) {
-          console.log('Updated Data:');
-          console.log(response.data);
-        } else {
-          console.log(`Failed to update data. Status code: ${response.status}`);
-          console.log(response.data);
-        }
+        // Preparing the payload
+        const payload = {
+          sessionid: localStorage.getItem('sessionid'),
+          data: data1 // Ensure `data1` is defined in your scope
+        };
+        alert(data1)
+      
+        // Sending the POST request
+       
+  const response = await fetch('https://abiv.rnpsoft.com/submit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      sessionid: localStorage.getItem('sessionid'),
+      data: data1,
+    }),
+  });
+
+  if (response.ok) {
+    const responseData = await response.json();
+    console.log('Updated Data:', responseData);
+    alert(`Success: ${JSON.stringify(responseData)}`);
+  } else {
+    const errorData = await response.json();
+    console.warn(`Failed to update data. Status code: ${response.status}`);
+    console.warn('Response:', errorData);
+    alert(`Failed: ${JSON.stringify(errorData)}`);
+  }
+
       } catch (error) {
-        console.error(`Error updating data: ${error}`);
+        // Handling errors
+        console.error('Error updating data:', error);
+      
         if (error.response) {
-          console.error(error.response.data);
+          // Server responded with a status code outside the 2xx range
+          console.error('Error response data:', error.response.data);
+          alert(`Error: ${JSON.stringify(error.response.data)}`);
+        } else if (error.request) {
+          // No response received
+          console.error('No response received:', error.request);
+          alert('Error: No response received from the server.');
+        } else {
+          // Other errors (e.g., setup issues)
+          console.error('Request error:', error.message);
+          alert(`Error: ${error.message}`);
         }
       }
-    };
+    }      
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
         const script = document.createElement('script');
@@ -241,15 +300,15 @@ const [dura,setdura]=useState({})
     };
     
     const Quiz = ({ onClose }) => {
-      console.log(data[flagged][9][number-2]);
-      console.log(data[flagged][9])
+      console.log(data[9][number-2]);
+      console.log(data[9])
       let count=1;
      try{
-      let c=data[flagged][9][number-2].split('Option')[4].trim().split('Correct')[1].replace(',','.').replace('\n','')
+      let c=data[9][number-2].split('Option')[4].trim().split('Correct')[1].replace(',','.').replace('\n','')
       count=counter(c)
       if (!typeof count === 'number'){
         if(data[flagged][9][number-2].split('Option').length>4){
-          count=counter(data[flagged][9][number-2].split('Option')[5])
+          count=counter(data[9][number-2].split('Option')[5])
         }
       }
     }catch{
@@ -257,10 +316,10 @@ const [dura,setdura]=useState({})
     }
       let option1,option2,option3,option4;
       try{
-        option1=data[flagged][9][number-2].split('Option')[1].trim().replace(',','.').replace('\n','')
-        option2=data[flagged][9][number-2].split('Option')[2].trim().replace(',','.').replace('\n','')
-        option3=data[flagged][9][number-2].split('Option')[3].trim().replace(',','.').replace('\n','')
-        option4=data[flagged][9][number-2].split('Option')[4].trim().split('Correct')[0].replace(',','.').replace('\n','')
+        option1=data[9][number-2].split('Option')[1].trim().replace(',','.').replace('\n','')
+        option2=data[9][number-2].split('Option')[2].trim().replace(',','.').replace('\n','')
+        option3=data[9][number-2].split('Option')[3].trim().replace(',','.').replace('\n','')
+        option4=data[9][number-2].split('Option')[4].trim().split('Correct')[0].replace(',','.').replace('\n','')
       }catch{
         option1="None of the above"
         option2=""
@@ -298,7 +357,7 @@ const [dura,setdura]=useState({})
                   <span className="text-white font-medium text-center">Time for some Questions</span>
               </div>
               <div className="text-left mb-4 mx-6">
-                  <p className="text-lg font-semibold text-black">{data[flagged][9][number-2].split('Option')[0].trim()}</p>
+                  <p className="text-lg font-semibold text-black">{data[9][number-2].split('Option')[0].trim()}</p>
               </div>
               <div className="space-y-4 mx-6">
                   {options.map((item, index) => (
@@ -351,16 +410,16 @@ const [dura,setdura]=useState({})
       console.log(Object.keys(dict[i-1]).length)
       for(let j=1;j<=Object.keys(dict[i-1]).length;j++){
         console.log('j');
-        for(let k=Number(localStorage.getItem('capt'));k<=Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1]);k++){
-          durations[`${k}`]=dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][0]
+        for(let k=Number(localStorage.getItem('capt'));k<=Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C${flagged+1}D${flagged+1}xchunk_${i}_sentence_${j}`][1]);k++){
+          durations[`${k}`]=dict[i-1][`C${flagged+1}D${flagged+1}xchunk_${i}_sentence_${j}`][0]
           setdura(prevDuration => ({
             ...prevDuration,
-            [`${k}`]: dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][0]
+            [`${k}`]: dict[i-1][`C${flagged+1}D${flagged+1}xchunk_${i}_sentence_${j}`][0]
           }));
         }
         console.log(durations)
-        setcapt(capt+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1]))
-        localStorage.setItem('capt',`${Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1])}`)
+        setcapt(capt+Math.round(dict[i-1][`C${flagged+1}D${flagged+1}xchunk_${i}_sentence_${j}`][1]))
+        localStorage.setItem('capt',`${Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C${flagged+1}D${flagged+1}xchunk_${i}_sentence_${j}`][1])}`)
       }
       console.log('ho')
       console.log(durations)
@@ -369,17 +428,18 @@ const [dura,setdura]=useState({})
       const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
       const headers = {
         'Content-Type': 'application/json',
+        'x-session-id': localStorage.getItem('sessionid')
         // 'Authorization': 'Bearer your-token-here',
       };
       try{
-      const response1 = await axios.post(fetchUrl, {}, { headers });
+      const response1 = await axios.post(fetchUrl, {sessionid:localStorage.getItem('sessionid')}, { headers });
       if (response1.status === 200) {
         const result = response1.data;
-        
         console.log('Received Data:', result.receivedData);
+        alert(result.receivedData)
         let c=result.receivedData;
-        c[f][10]=1;
-        c[f][11]=t;
+        c[10]=1;
+        c[11]=t;
         updateData(c)
         // You can now use 'data' as needed
       } else {
@@ -390,17 +450,19 @@ const [dura,setdura]=useState({})
       const headers = {
         // Add any required headers here
         'Content-Type': 'application/json',
+        'x-session-id': localStorage.getItem('sessionid')
+        
         // 'Authorization': 'Bearer your-token-here',
       };
       try{
-      const response1 = await axios.post(fetchUrl, {}, { headers });
+      const response1 = await axios.post(fetchUrl, {sessionid:localStorage.getItem('sessionid')}, { headers });
       if (response1.status === 200) {
         const result = response1.data;
         setData(result.receivedData);
         console.log('Received Data:', result.receivedData);
         let c=result.receivedData;
         
-        setTopic(c[flagged][3].split('.pdf')[0])
+        setTopic(c[3].split('.pdf')[0])
         // You can now use 'data' as needed
       } else {
         console.error('Failed to fetch data:', response1.statusText);
@@ -410,19 +472,20 @@ const [dura,setdura]=useState({})
         const headers = {
           // Add any required headers here
           'Content-Type': 'application/json',
+          'x-session-id': localStorage.getItem('sessionid')
           // 'Authorization': 'Bearer your-token-here',
         };
         try{
-        const response1 = await axios.post(fetchUrl, {}, { headers });
+        const response1 = await axios.post(fetchUrl, {sessionid:localStorage.getItem('sessionid')}, { headers });
         if (response1.status === 200) {
           const result = response1.data;
           setData(result.receivedData);
           console.log('Received Data:', result.receivedData);
           let c=result.receivedData;
           if(i==2){
-          handlecaption(c[flagged][12],Number(localStorage.getItem('b')))
+          handlecaption(c[12],Number(localStorage.getItem('b')))
           }
-          setTopic(c[flagged][3].split('.pdf')[0])
+          setTopic(c[3].split('.pdf')[0])
           // You can now use 'data' as needed
         } else {
           console.error('Failed to fetch data:', response1.statusText);
@@ -430,22 +493,24 @@ const [dura,setdura]=useState({})
       
     const { flagged } = location.state || {};
     const { random } =  location.sessionid || {};
-    const [data,setData]=useState([[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',0,0,[],0,[],0,'',[],'',[]],[0,0,0,'','',1,0,[],0,''],[0,0,0,'','',1,0,[],0,'']])
+    const [data,setData]=useState([0,0,0,'','',0,0,[],0,[],0,'',[],'',[]])
     let b=0
     const fetchresult3=async()=>{
       const fetchUrl = 'https://abiv.rnpsoft.com/submit1';
       const headers = {
         // Add any required headers here
         'Content-Type': 'application/json',
+        'x-session-id': localStorage.getItem('sessionid')
         // 'Authorization': 'Bearer your-token-here',
       };
-      const response1 = await axios.post(fetchUrl, {}, { headers });
+      console.log(localStorage.getItem('sessionid'))
+      const response1 = await axios.post(fetchUrl, {sessionid:localStorage.getItem('sessionid')}, { headers });
       if (response1.status === 200) {
         const result = response1.data;
         console.log('Received Data:', result.receivedData);
         let c=result.receivedData;
         setData(c);
-        return c[flagged][14].length
+        return c[14].length
       }else{return -1}
 
   }
@@ -454,22 +519,25 @@ const [dura,setdura]=useState({})
     const headers = {
       // Add any required headers here
       'Content-Type': 'application/json',
+      'x-session-id': localStorage.getItem('sessionid')
       // 'Authorization': 'Bearer your-token-here',
     };
-    const response1 = await axios.post(fetchUrl, {}, { headers });
+    
+    
+    const response1 = await axios.post(fetchUrl, {sessionid:localStorage.getItem('sessionid')}, { headers });
     if (response1.status === 200) {
       const result = response1.data;
       console.log('Received Data:', result.receivedData);
       let c=result.receivedData;
-      return c[flagged][14][i]
+      return c[14][i]
     }else{return -1}
 
 }
     const fetchVideo = async (i) => {
         
       try {
-        console.log(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
-        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
+        console.log(`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
+        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
         if (!response.ok) {
           throw new Error('Failed to fetch video');
         }
@@ -485,8 +553,8 @@ const [dura,setdura]=useState({})
     };
     const fetchTeacher = async (i) => {
       try {
-        console.log(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
-        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`); // Change the URL according to your server
+        console.log(`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`)
+        const response = await fetch(`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`); // Change the URL according to your server
         if (!response.ok) {
           throw new Error('Failed to fetch video');
         }
@@ -512,7 +580,7 @@ const [dura,setdura]=useState({})
       localStorage.setItem('capt','0');
       localStorage.setItem('capt1','0');
       localStorage.setItem('duration','0');
-      localStorage.setItem('appeared','0')
+      localStorage.setItem('appeared','0');
       localStorage.setItem('mcq','0');
       loadScript('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
       .then(() => {
@@ -522,7 +590,7 @@ const [dura,setdura]=useState({})
         console.error(error.message);
       });
       console.log(data)
-     
+      localStorage.setItem('isloading','True');
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
       localStorage.setItem('teacher', null);
@@ -611,8 +679,8 @@ console.log('Duration is '+localStorage.getItem('duration'));
 
       try {
         await fetchresult(2)
-        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
-        const response1=await axios.get(`https://abiv.rnpsoft.com/check-availability/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`)
+        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`);
+        const response1=await axios.get(`https://abiv.rnpsoft.com/check-availability/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`)
         if (response.data.available && response1.data.available) {
           let ca=Number(localStorage.getItem('capt'))
           let ca2=Number(localStorage.getItem('capt1'))
@@ -620,12 +688,15 @@ console.log('Duration is '+localStorage.getItem('duration'));
           await fetchresult1(2)
 setl1(true)
           setLoaded(true)
-          let url1=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`
-          let url2=`https://abiv.rnpsoft.com/downloads/uploads/C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
+          let url1=`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xconcatenated_chunk_${i}.mp4`
+          let url2=`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_C${Number(flagged)+1}D${Number(flagged)+1}xresult_video_${i}.mp4`
           videoRef1.current.src=url1
           videoRef2.current.src=url2
           videoRef1.current.currentTime=ca2
           videoRef2.current.currentTime=ca2
+         
+          localStorage.setItem('coins',`${Number(localStorage.getItem('coins'))-3}`)
+          
           videoRef1.current.load()
           videoRef2.current.load()
           if(login){
@@ -636,8 +707,6 @@ setl1(true)
           videoRef1.current.oncanplaythrough = () => {setl1(false);
             console.log(Number(localStorage.getItem('duration')))
             if(!capt1){
-            
-            
             }else{setcapt1(false)
             }
             
@@ -646,10 +715,8 @@ setl1(true)
 
             
           }
-          videoRef2.current.oncanplaythrough = () => {setl1(false);
-           
+          videoRef2.current.oncanplaythrough = () => {setl1(false);     
           }
-       
         videoRef1.current.muted=true
         videoRef2.current.muted=false
       
@@ -663,17 +730,15 @@ setl1(true)
         setTimeout(()=>{checkVideoAvailability(i)}, 5000); // Retry after 5 seconds if there's an error
       }
     };
-
     const checkDoubtAvailability = async (i) => {
       try {
-        
         fetchresult(1)
-        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`);
+        const response = await axios.get(`https://abiv.rnpsoft.com/check-availability/${localStorage.getItem('sessionid')}_${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`);
         if (response.data.available) {
           setl1(true)
           setLoaded(true)
           setdoubt(true)
-          let url1=`https://abiv.rnpsoft.com/downloads/uploads/${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`
+          let url1=`https://abiv.rnpsoft.com/downloads/uploads/${localStorage.getItem('sessionid')}_${dbt}C${Number(flagged)+1}D${Number(flagged)+1}xdoubtconcatenated_chunk_${i}.mp4`
           await preloadVideo(url1);
           setAnimating(true);
           videoRef1.current.src=url1
@@ -683,17 +748,37 @@ setl1(true)
           setIsVideoVisible(false)
           setAnimating(false);
           setdbt(dbt+1);
+          if(localStorage.getItem('auth-token')){
+            try{
+          if(!userdata[localStorage.getItem('sessionid')].doubt){
+          userdata[localStorage.getItem('sessionid')].doubt=[]
+          }else{
+            userdata[localStorage.getItem('sessionid')].doubt.push({
+              "coins":3,
+              "duration":videoRef1.current.duration,
+              "index":i
+            }
+          )
+          userdata.coins=userdata.coins-3
+          fetch("https://abiv.rnpsoft.com/updatedb", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"},
+            body: JSON.stringify(userdata)
+          })
+          }}catch(e){
+            console.log('error')
+          }
         videoRef1.current.play()
         videoRef2.current.play()
         audioRef.current.play()
         videoRef1.current.muted=false
         videoRef2.current.muted=true
-        
         } else {
           setLoaded(false)
           setTimeout(()=>{checkDoubtAvailability(i)}, 5000); 
         }
-      } catch (error) {
+      } }catch (error) {
         console.error('Error checking video availability:', error);
         setLoaded(false)
         setTimeout(()=>{checkDoubtAvailability(i)}, 5000);
@@ -702,7 +787,7 @@ setl1(true)
     const Endgame=async()=>{
       
       setact(false)
-      console.log(data[flagged][6])
+      console.log(data[6])
       
       if(videoRef2.current.muted){
       }
@@ -756,7 +841,6 @@ recognition.onstart = function() {
         recognition.start();
       }
       else if(1==1 ){
-        
         setnumber(number+1)
         setdoubt(false)
         setIsVideoVisible(true)
@@ -812,9 +896,9 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
     const downloadNotes = () => {
       var printWindow = window.open('', '', 'height=400,width=800');
       
-      printWindow.document.write(`</head><body ><title>${data[flagged][3]}</title>`);
+      printWindow.document.write(`</head><body ><title>${data[3]}</title>`);
       printWindow.document.write(`</body><b>Summary</b></html><br><br>`);
-      printWindow.document.write(`</body>${data[flagged+2][3]}</html><br><br>`);
+      printWindow.document.write(`</body>${data[3]}</html><br><br>`);
       printWindow.document.write(`</body><b>Multiple Choice Questions</b></html><br><br>`);
       printWindow.document.write(`</body>${data[flagged][9].join('<br><br>')}</html>`);
       printWindow.document.close();
@@ -835,15 +919,15 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
 
         if(await fetchresult3()>=Number(localStorage.getItem('b'))+1){
           console.log("value of c is"+localStorage.getItem('b'));
-          console.log(data[0][14][localStorage.getItem('b')])
+          console.log(data[14][localStorage.getItem('b')])
           localStorage.setItem('text1',' '+await fetchresult4(localStorage.getItem('b')))
         clearInterval(interval2)
       localStorage.setItem('isTheory','True')
     const interval=setInterval(()=>{
-      if(localStorage.getItem('index')<localStorage.getItem('text1').length && localStorage.getItem('isTheory').includes('True')){
+      if(localStorage.getItem('index')<localStorage.getItem('text1').length-1 && localStorage.getItem('isTheory').includes('True')){
         console.log("Value of b is "+ localStorage.getItem('b'))
         setDisplayText(prevDisplayText => prevDisplayText + localStorage.getItem('text1')[Number(localStorage.getItem('index'))]);
-        if(!isUserScrolling)preRef.current.scrollTop = preRef.current.scrollHeight;
+        if(!isUserScrolling){try{preRef.current.scrollTop = preRef.current.scrollHeight;}catch(e){}}
         localStorage.setItem('index',Number(localStorage.getItem('index'))+1)
         }else{
           clearInterval(interval)
@@ -859,7 +943,22 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
       }
     },150)}
   },1000)}
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        console.log("escaped");
+        if(isFullScreen){
+          setIsFullScreen(false)
+        }
+      }console.log(event.key)
+    };
 
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
     return (
         <div className='video-page-background w-screen  flex flex-col justify-center items-center text-white font-[Montserrat] '>
             <h1 className='md:text-5xl text-[22px] text-center lg:text-justify  mt-5 font-semibold font-[jost]'>{topic==''?``:`TOPIC NAME: ${topic}`}</h1>
@@ -871,29 +970,37 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
                             <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{quizToggle ? 'On' : 'Off'}</span>
                         </label>
                     </div>
-                   
-                      
-               {(!localStorage.getItem('isTheory').includes('True') && !localStorage.getItem('isDoubt').includes('True')) &&     
-               <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}style={
-
-          {
-            border: '2px solid #fff',borderRadius: '15px',padding:'3px'
-          }
-               }>
+                <div ref={containerRef} >
+               {(!localStorage.getItem('isTheory').includes('True') && !localStorage.getItem('isDoubt').includes('True')) &&  !loading &&
+              <div 
+              className="flex object-cover relative h-[50vh] w-[90vw] md:h-[60vh] md:w-[80vw] lg:h-[520px] lg:w-[1000px]" 
+              style={{
+                border: '2px solid #fff',
+                borderRadius: '15px',
+                padding: '3px',
+              }}
+            >
                
 
       {/* Video 1 */}
-      <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: '#181c64'}}>
-        <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
+      <div className="flex flex-wrap object-cover h-full w-full justify-center items-center " style={{ backgroundColor: '#181c64' }}>
+
+      <div
+    className={`${showQuiz || !login ? "blur-sm" : ""} 
+                ${!isLoaded || l1 ? "blur-sm" : ""} 
+                ${isVideoVisible ? "w-1/2" : "w-1/2"} 
+                h-full flex justify-center items-center`}
+  >      <div className="caption absolute object-cover bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
+
           {caption}
         </div>
-        <div className={`mosaic-container object-cover w-full ${isFullScreen?'h-full':'h-[500px]'}`}>
+        <div className={`mosaic-container object-cover w-full ${isFullScreen ? 'h-full' : 'h-[52vh]'}`}>
         <video
           ref={videoRef1}
           onClick={handlePlayPause}
           className="object-cover w-full h-full"
           onTransitionEnd={() => setAnimating(false)}
-          style={{ transition: 'transform 1s',marginLeft:'10px' }}
+          style={{transition: 'transform 1s',marginLeft:'10px' }}
           onTimeUpdate={() => {
             if (Math.floor(videoRef2.current.duration - videoRef2.current.currentTime) === 3) {
               setTransition(true);
@@ -905,7 +1012,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
               transitions[randomIndex]();
 
             }
-                        setcaption(dura[`${Math.round(videoRef2.current.currentTime)}`]);
+            setcaption(dura[`${Math.round(videoRef2.current.currentTime)}`]);
           }}
           controls
         >
@@ -919,8 +1026,11 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
       </div>
 
       {/* Video 2 */}
-      <div className={`sm:flex items-right ${isVideoVisible?'w-[40%]':'w-[0%]'} h-full hidden ${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""}  ml-30 justify-end`} style={{ backgroundColor: '#181c64' }}>
-        <video
+      <div
+    className={`items-end ${isVideoVisible ? 'w-1/2' : 'w-1/2'} 
+                h-full flex justify-center ${showQuiz || !login ? "blur-sm" : ""} 
+                ${!isLoaded || l1 ? "blur-sm" : ""}`}
+  ><video
           ref={videoRef2}
           onTimeUpdate={handleTimeUpdate}
           onEnded={applying}
@@ -944,9 +1054,11 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
          
         ) : null}
       {/* Quiz and controls */}
-      {showQuiz && ( <div className="absolute inset-0 flex items-center justify-center z-30">
-          <Quiz onClose={closeQuiz} />
-        </div>)}
+      {showQuiz && (
+        <div className="absolute inset-0 flex items-center justify-center z-30">
+          <Quiz onClose={closeQuiz}/>
+        </div>)
+        }
         {!login && !signup &&(
           <div className="absolute inset-0 flex items-center justify-center z-30">
           <Login islogin={islogin} issignup={issignup}></Login>
@@ -990,11 +1102,11 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
           display: none !important;
         }
       `}</style>
-    
+    </div>
             </div>
 }{
   (localStorage.getItem('isTheory').includes('True') && !localStorage.getItem('isDoubt').includes('True')) &&
-  <image className="flex h-[520px] w-[1000px] relative" ref={containerRef} >
+  <image className="flex h-[520px] w-[1000px] relative" >
 
   <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[100%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
 
@@ -1009,8 +1121,20 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
   <audio src={Audi} autoPlay/>
 }
 </image>
-}  {localStorage.getItem('isDoubt').includes('True') &&     
-               <div className="flex h-[520px] w-[1000px] relative" ref={containerRef}>
+}
+{loading && 
+               <div className="flex h-[520px] object-cover w-[1000px] relative" >
+
+        <div className={`mosaic-container object-cover w-full ${isFullScreen?'h-full':'h-[500px]'}`}>
+        <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[100%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: 'black' }}>
+
+  <Loader/>
+
+</div></div>
+  </div>
+}
+  {localStorage.getItem('isDoubt').includes('True') &&     
+               <div className="flex h-[520px] w-[1000px] relative" >
       {/* Video 1 */}
       <div className={`${showQuiz||!login ? "blur-sm" : ""} ${!isLoaded || l1 ?"blur-sm":""} ${isVideoVisible?'w-[60%]':'w-[100%]'} h-full flex justify-center items-center`} style={{ backgroundColor: '#006a7d' }}>
         <div className="caption absolute bottom-4 left-4 text-white bg-black bg-opacity-50 px-2 py-1 rounded-md z-20">
@@ -1072,8 +1196,6 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
         setRec(true)
           console.log("Recognition started.");
       };
-      
-      
           recognition.onerror = function(event) {
               console.error('Recognition error:', event.error);
               // Restart recognition unless there's a specific error that should stop it
@@ -1110,7 +1232,6 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
                 }
               }
               recognition.start();
-            
                   }else if(localStorage.getItem('isCheck').includes('alpha')){
                     localStorage.setItem('isDoubt','False');
                     localStorage.setItem('isCheck','True');
@@ -1190,6 +1311,7 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
     
             </div>
 }
+</div>
             <i id="fullscreen-toggle-btn" className="text-white cursor-pointer">[Fullscreen]</i>
             <div className="flex justify-center space-x-14 top-2 mb-8">
       <div className="text-center ">

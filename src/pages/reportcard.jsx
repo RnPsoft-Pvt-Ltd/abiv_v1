@@ -15,34 +15,33 @@ function App() {
         <p className="text-lg">Time Taken : 0hrs 5min</p>
       </div>
       <h1 className="text-3xl font-bold mb-8 text-center w-full">Performance Report</h1>
-
     </div>
     <div className="mt-8 p-6 text-white rounded-lg shadow-lg max-w-md mx-auto ">
       <table className="w-full text-center border-collapse border border-white">
         <tbody>
           <tr className="border border-white">
             <td className="px-4 py-2 border-r border-white">Total Questions</td>
-            <td className="px-4 py-2">15</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).questions}</td>
           </tr>
           <tr className="border border-white">
             <td className="px-4 py-2 border-r border-white">Attempted Questions</td>
-            <td className="px-4 py-2">3</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).attempted}</td>
           </tr>
           <tr className="border border-white">
             <td className="px-4 py-2 border-r border-white">Missed Questions</td>
-            <td className="px-4 py-2">12</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).missed}</td>
           </tr>
           <tr className="border border-white">
             <td className="px-4 py-2 border-r border-white">Correct Answers</td>
-            <td className="px-4 py-2">0</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).correct}</td>
           </tr>
           <tr className="border border-white">
             <td className="px-4 py-2 border-r border-white">Incorrect Answers</td>
-            <td className="px-4 py-2">3</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).incorrect}</td>
           </tr>
           <tr className="border border-white">
-            <td className="px-4 py-2 border-r border-white">Result</td>
-            <td className="px-4 py-2">Fail</td>
+            <td className="px-4 py-2 border-r border-white">Total Marks:</td>
+            <td className="px-4 py-2">{JSON.parse(localStorage.getItem('result')).total}</td>
           </tr>
         </tbody>
       </table>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import avatar from "./images/avatar.png";
 import bot from "./images/bot.png";
-import chat from "./images/chat-icon.png";
+import chat from "./images/flashlight-line.png";
 import send from "./images/Vector.png";
 import "./bot.css";
 import axios from 'axios'

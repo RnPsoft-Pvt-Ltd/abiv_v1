@@ -40,6 +40,7 @@ const Popup = ({filedata}) => {
           formData.append('file', file);
       formData.append('text',data);
       formData.append('sessionid','interview')
+      formData.append('dataid',random)
           const response = await axios.post('https://abiv.rnpsoft.com/upload', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
@@ -74,6 +75,7 @@ const Popup = ({filedata}) => {
       localStorage.setItem('appeared','0');
       localStorage.setItem('b', JSON.stringify(0));
       localStorage.setItem('animation', null);
+      localStorage.setItem('isloading','True');
       localStorage.setItem('teacher', null);
         const closeHandler = () => {
             if (closer) {
@@ -83,6 +85,7 @@ const Popup = ({filedata}) => {
             else if (loader) {
                 setLoader(false);
                 handleUpload("True")
+                localStorage.setItem('sessionid',random)
                 nav("/interview", { state: { flagged },sessionid:{random} });   
             }
         }
@@ -102,6 +105,7 @@ const Popup = ({filedata}) => {
           <div className={`flex justify-evenly  w-full ${lngSelected && 'hidden'} `}>
             <button className='tracking-tight text-center w-[7rem] p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl 'defaultValue={"English"} onClick={()=>{handelLanguage('False')}} >Continue in English</button>
             <button className='tracking-tight w-[7rem] text-center p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl ' defaultValue={"Hindi"} onClick={()=>{handelLanguage('True')}} >Continue in Hindi</button>
+
           </div>
           {lngSelected && 
           <FadeLoader color="#adadad"  />

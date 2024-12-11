@@ -24,6 +24,8 @@ import Attend from './pages/upload1.jsx'
 import Selectscreen from './pages/selectscreen.jsx'
 import Mcqexam from './pages/mcqexam'
 import Reportcard from './pages/reportcard.jsx'
+import Fileupload from './pages/fileupload.jsx'
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -46,6 +48,7 @@ const App = () => {
         <Route path='/selectscreen' element={<Selectscreen/>}/>
         <Route path='/mcqexam' element={<Mcqexam/>}/>
         <Route path='/report' element={<Reportcard/>}/>
+        <Route path='/fileupload' element={<Fileupload/>}/>
        </Route>
       <Route path="/signup" element={<SignUp />} />
         <Route path="/otpconfirm" element={<OtpConfirm />} />

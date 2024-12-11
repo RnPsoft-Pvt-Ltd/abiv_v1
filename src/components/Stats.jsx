@@ -5,7 +5,31 @@ import img3 from "../assets/Rectangle 2372.png"
 import img2 from "../assets/Rectangle 2371 (2).png"
 import img1 from "../assets/Rectangle 2370covidprotocols.png"
 import credit from "../assets/image 97.png";
+import {useState,useEffect} from "react";
+
 const Stats = () => {
+    const [keys, setkeys] = useState([]);
+    const [rest,setrest]=useState({});
+    useEffect(() => {
+        fetch('https://abiv.rnpsoft.com/fetchdata', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email: JSON.parse(localStorage.getItem('user-data')).email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            let c = data.data.videos;
+            setrest(data.data);
+                if(c){
+                Object.keys(c).slice(0, 3).forEach(key => {
+                    console.log(`${key}: ${c[key]}`);
+                    let p = [...keys, c[key]];
+                    setkeys(p);
+                });
+            }
+    })},[])
   return (
     <main className='w-screen h-screen bg-gradient-to-b from-[#010b78] to-[black] overflow-x-hidden max-[540px]:pb-[800px]'>
         <div className="w-[1144px] max-[426px]:w-[360px] max-[345px]:w-[330px] max-[1026px]:w-[750px] h-full mx-auto flex flex-col">
@@ -49,8 +73,7 @@ const Stats = () => {
                             <div className="w-[143px] h-[107px] flex flex-col mt-3 p-4 gap-y-2 max-[426px]:w-[86px] max-[426px]:h-[63px]">
 
                                 <p className="text-[#000000] text-opacity-70 font-medium text-[14px] max-[426px]:text-[8px] font-inter tracking-[-0.4px]"> Active Duration </p>
-                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">27Hrs</p>
-                                 
+                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">{rest.durations?()=>{let sum=0;for(let i=0;i<rest.durations.length;i++){sum+=rest.durations[i]}return sum;}:'0secs'}</p>
                             </div>
                         </div>
 
@@ -58,7 +81,7 @@ const Stats = () => {
                             <div className="w-[143px] h-[107px] flex flex-col mt-3 p-4 gap-y-2 max-[426px]:w-[86px] max-[426px]:h-[63px]">
                                 
                                 <p className="text-[#000000] text-opacity-70 font-medium text-[11px] max-[426px]:text-[5px] font-inter "> Questions Attempted </p>
-                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">32</p>
+                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">{rest.questions?rest.question:0}</p>
                                  
                             </div>
                         </div>
@@ -67,11 +90,9 @@ const Stats = () => {
                             <div className="w-[144px] h-[107px] flex flex-col mt-3 p-4 gap-y-2 max-[426px]:w-[86px] max-[426px]:h-[63px]">
                                 
                                 <p className="text-[#000000] text-opacity-70 font-medium text-[14px] max-[426px]:text-[7px] font-inter tracking-[-0.4px]"> Av. Session Length </p>
-                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">2m 34s</p>
-                                 
+                                <p className="text-black font-bold font-inter text-[24px] max-[426px]:text-[14px]">{rest.durations?()=>{let sum=0;for(let i=0;i<rest.durations.length;i++){sum+=rest.durations[i]} return sum/rest.durations.length}:'0secs'}</p>   
                             </div>
                         </div>
-
                     </div>
 
                     <div className="w-[540px] h-[227px] bg-white rounded-[20px] flex flex-col justify-center p-4 gap-y-3 mt-8 max-[426px]:w-[273px]
@@ -83,9 +104,11 @@ const Stats = () => {
 
                         <div className="w-[500px] h-[134px] pt-4 flex flex-col font-semibold text-inter text-[14px] text-black
                         gap-y-4 max-[426px]:w-[252px] max-[426px]:h-[70px] max-[426px]:gap-y-1 max-[426px]:pt-1 max-[426px]:text-[7px] leading-[9px]">
-                            <p>Mauryan Art</p>
-                            <p>Krishna Dynasty</p>
-                            <p>Digestive System</p>
+                            {keys.map((key) => (
+                                <div className="flex items-center justify-between">
+                                    <p>{key.title}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -101,20 +124,22 @@ const Stats = () => {
                             <th>Video Length</th>
                             <th>Credits Consumed</th>
                         </tr>
-                        <tr className="w-full h-[30px] max-[426px]:h-[15px] max-[426px]:text-[6.46px] max-[426px]:leading-[9.4px] flex justify-evenly bg-white font-normal text-inter text-[13px] text-slate-600 leading-[19px]">
-                            <td className=" mx-auto">Mouriyan Art</td>
-                            <td className=" mx-auto">20mins 10secs</td> 
-                            <td className="flex mx-auto">2 
+                           {keys.map((key) => (
+                            <>
+                                                    <tr className="w-full h-[30px] max-[426px]:h-[15px] max-[426px]:text-[6.46px] max-[426px]:leading-[9.4px] flex justify-evenly bg-white font-normal text-inter text-[13px] text-slate-600 leading-[19px]">
+
+                               <td className=" mx-auto">{key.title}</td>
+                               <td className=" mx-auto">{key.duration?key.duration:'0secs'}</td> 
+                                 <td className="flex mx-auto">{key.coins?key.coins:0}
                                 <span><img src={credit} alt="" className="w-6"/></span>
-                            </td>
-                        </tr>
+                                 </td>
+                                 </tr>
 
-                        <tr className="w-full h-[30px] max-[426px]:h-[15px] max-[426px]:text-[6.46px] max-[426px]:leading-[9.4px] flex justify-evenly bg-white font-normal text-inter  text-[13px] text-slate-600 leading-[19px]">
-                            <td className="mx-auto text-center">Digestive System</td>
-                            <td className="mx-auto">30mins 10secs</td>
-                            <td className="flex mx-auto">3 <span><img src={credit}  alt=" " className="w-6"/></span></td>
-                        </tr>
+                              </> 
+                            ))}    
+                            
 
+                       
                         </table>
                         
 
@@ -138,7 +163,6 @@ const Stats = () => {
                                     <p className=" font-semibold font-inter text-[13px] leading-4 max-[426px]:text-[7px] max-[426px]:leading-[9px]">Covid Protocols</p>
                                     <div className="w-[300px] h-[11px] rounded-[92px] bg-[#2fea9b] bg-opacity-30 max-[426px]:w-[170px] max-[426px]:h-[6px]">
                                         <div className="w-[95%] h-full rounded-[92px] bg-gradient-to-r to-[#2fea9b] from-[#7fdd53]">
-
                                         </div>
                                     </div>
                                 </div>

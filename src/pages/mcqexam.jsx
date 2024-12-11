@@ -11,9 +11,14 @@ function App() {
   const [markedForReview, setMarkedForReview] = useState(Array(30).fill(false)); // Track marked questions
   const [data,setData]=useState('')
   const [startfetching,setfetch]=useState(false)
+  const [attempted,setattempted]=useState(0)
+  const [correct,,setcorrect]=useState(0)
+  const [incorrect,setincorrect]=useState(0);
+
   const [questions,setQuestion] = useState(Array.from({ length: 30 }, (_, i) => ({
     questionText: `Question ${i + 1}: `,
-    options: ["", "", "", ""]
+    options: ["", "", "", ""],
+    correctoption:1,
   })))
   const math_to_word_explanation_instruction=`
   Make a unique difficult question based on the data and return output in strictly this fromat as i will do Json.parse on it directly
@@ -66,6 +71,7 @@ function App() {
       console.error('Failed to fetch data:', response1.statusText);
     }}catch(error){}}
     useEffect(()=>{
+      localStorage.setItem('coins',`${Number(localStorage.getItem('coins'))-2}`)
       const Interval=setInterval(async()=>{
         await fetchresult1()
         if(data.length>=1){
@@ -142,6 +148,22 @@ function App() {
 
   const handleSubmit = () => {
     console.log('Submit exam', answers);
+    for(let i=0;i<questions.length;i++){
+      if(answers[i]){
+setattempted(attempted+1);
+if(answers[i] == questions[i].correctoption)setcorrect(correct+1)
+else setincorrect(incorrect+1)        
+      }
+    }
+    let r={
+      questions:30,
+      attempted:attempted,
+      missed:30-attempted,
+      correct:correct,
+      incorrect:incorrect,
+      total:`${attempted}/30`
+    }
+    localStorage.setItem("result",JSON.stringify(r));
     nav('/report')
   };
 

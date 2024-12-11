@@ -6,7 +6,8 @@ import eclipse2 from "../../assets/Ellipse 2.png";
 import eclipse3 from "../../assets/Ellipse 3.png";
 import eclipse5 from "../../assets/Ellipse 5.png";
 import { useNavigate } from 'react-router-dom';
-
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 const LoginSignUp2 = ({islogin,issignup}) => {
   const [password, setPassword] = useState('');
   const [isVisible, setIsVisible] = useState(false);
@@ -29,7 +30,7 @@ const LoginSignUp2 = ({islogin,issignup}) => {
     <>
         {/* Background eclipse images */}
         <div
-          className="w-full h-[430px] relative rounded-3xl  shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 lg:px-16"
+          className="w-full h-[auto] relative rounded-3xl  shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 lg:px-16"
           style={{ background: "rgba(255, 255, 255, 0.6)" }} // Semi-transparent background for the container
         >
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -38,7 +39,7 @@ const LoginSignUp2 = ({islogin,issignup}) => {
             </h1>
             <p className="text-sm text-center font-light text-black dark:text-black">
               Don't have an account yet?{" "}
-              <div className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={()=>{issignup(true)}}>
+              <div className="font-medium text-primary-600 hover:underline dark:text-primary-500" onClick={()=>{issignup(true);islogin(false);localStorage.setItem('loginactive','False');localStorage.setItem('signup','True')}}>
                 Sign up
               </div>
             </p>
@@ -55,8 +56,16 @@ const LoginSignUp2 = ({islogin,issignup}) => {
            
                if (responseData.success) {
                  localStorage.setItem("auth-token", responseData.token);
-                 localStorage.setItem("user-data",formInput)
-                 islogin(true)
+                 islogin(false)
+
+                 localStorage.setItem("user-data",JSON.stringify(
+                  {
+                    email:formInput.email,
+                    password:formInput.password
+                  }
+                 ))
+                 localStorage.setItem('loginactive','False');
+                  navigate('/');
                 } else {
                  console.log(responseData);
                }
@@ -107,7 +116,52 @@ const LoginSignUp2 = ({islogin,issignup}) => {
               >
                 Log in
               </button>
+              
             </form>
+            <GoogleOAuthProvider clientId="594536791781-6640scot0ufth8ol2onnnrg3tqo088ih.apps.googleusercontent.com">
+          <GoogleLogin
+  onSuccess={credentialResponse => {
+    console.log(credentialResponse);
+    const token = credentialResponse.credential;
+    console.log(token);
+    fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token)
+    .then(response => response.json())
+    .then(data => {
+      console.log('User Info:', data);
+      const { email } = data;
+      console.log('Email:', email);
+      localStorage.setItem('user-data',JSON.stringify({email}));
+      fetch('https://abiv.rnpsoft.com/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email,password:'google',signinwithgoogle:true })
+      }).then(response => response.json())
+      .then(data => {
+        if(data.success){
+          localStorage.setItem('auth-token',data.token);
+          navigate('/');
+          islogin(false)
+        }else{
+          alert('Please try different method to login');
+        }
+       
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+      
+    })
+    .catch(error => {
+      console.error('Error fetching user info:', error);
+    });
+    // You can decode the token to get user information if needed
+  }}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+/></GoogleOAuthProvider>
           </div>
         </div>
     </>

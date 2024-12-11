@@ -8,6 +8,8 @@ import { FaSearch } from "react-icons/fa";
 import { VscSend } from "react-icons/vsc";
 import * as sdk from 'microsoft-cognitiveservices-speech-sdk'
 import axios from 'axios';
+import border1 from './Overlay+Border.png'
+import border2 from './Overlay+Border2.png'
 import jsPDF from "jspdf";
 const Page3 = ({ id }) => {
   const mathExplanationInstruction = `
@@ -124,104 +126,52 @@ async function mathToWords(sentences, prompt = mathToWordExplanationInstruction)
 
 
   return (
-    <section id={id} className="w-full h-[1024px] bg-custom-gradient flex flex-col items-center gap-y-4" >
+    <section id={id} className="w-full min-h-screen bg-custom-gradient flex flex-col items-center gap-y-4 p-4">
       {isUpload
-        ? <Popup filedata={{state: { file: selectedFile } }}/>
+        ? <Popup filedata={{ state: { file: selectedFile } }} style={{ height: '200vh' }} />
         : <>
-
-          <div className="w-full font-poppins font-extrabold tracking-[-1.4px] pt-20" id="GetStarted" >
-
-            <p className="text-white text-[64px] leading-[87px] text-center">
+          <div className="w-full font-poppins font-extrabold tracking-[-1.4px] pt-20 text-center" id="GetStarted">
+            <p className="text-white text-4xl md:text-5xl lg:text-6xl leading-tight md:leading-snug lg:leading-normal">
               Study with any Text/Image/PDF
             </p>
-
-            <p className="text-[#b9b9b9] text-[32px] leading-[44px] text-center w-[900px] h-[160px] mx-auto">
+            <p className="text-[#b9b9b9] text-lg md:text-xl lg:text-2xl leading-snug md:leading-normal lg:leading-relaxed w-full md:w-3/4 lg:w-1/2 mx-auto mt-4">
               Join millions of students, researchers and professionals to
               instantly answer questions and understand research with AI
             </p>
           </div>
-          <div className='container flex flex-row items-center justify-center'>
-          
-          <div {...getRootProps()} className="aspect-square border-[1.35px] rounded-[10px] bg-[#010c16] border-[#d9d9d9] border-dashed flex flex-col items-center justify-center">
-
-
-
-
-
-            <div className='className="w-[840px] h-[310px] flex flex-col items-center justify-center'>
-
+          <div className='container flex flex-col md:flex-row items-center justify-center gap-4 mt-8'>
+            <div className="relative w-full md:w-1/2 lg:w-1/4 aspect-square rounded-xl overflow-hidden mb-4 md:mb-0" {...getRootProps()}>
               <input {...getInputProps()} name='file' />
-              {
-                isDragActive ?
-                  <p>Drop the files here ...</p> :
-                  <>
-                    <PiFilePdf className='fill-[#f8f8f8] w-[64px] h-[64px]' />
-                    <p className=' w-[145px] h-[34px] font-abel font-normal text-[21px] leading-[50px] text-[#ffffff] opacity-[88%] text-center'> Drop theoratical PDF here </p>
-                  </>
-
-              }
+              <img src={border1} className="object-cover w-full h-full" />
+              {isDragActive && <p className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">Drop the files here ...</p>}
             </div>
-
-
-            <div className="font-abel font-normal text-[24.8px] leading-10 text-[#7699de] flex justify-between w-full">
-
-              <button className="p-2">
-                Browse my Computer
-              </button>
-
-              <button className="p-2" onClick={()=>{navigate('/numericals')}}>
-                From URL
-              </button>
-
+            <div className="relative w-full md:w-1/2 lg:w-1/4 aspect-square rounded-xl overflow-hidden cursor-pointer" onClick={() => { navigate('/qna') }}>
+              <img src={border2} className="object-cover w-full h-full" />
             </div>
-
           </div>
-          <div className="box-2 aspect-square bg-[#3e4df1] rounded-xl mx-5 border-[1px] border-zinc-400" style={{cursor:"pointer"}} onClick={()=>{navigate('/qna')}}>
-              <div className='flex w-full h-full items-center px-20'>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(243,242,242,1)"><path d="M5.45455 15L1 18.5V3C1 2.44772 1.44772 2 2 2H17C17.5523 2 18 2.44772 18 3V15H5.45455ZM4.76282 13H16V4H3V14.3851L4.76282 13ZM8 17H18.2372L20 18.3851V8H21C21.5523 8 22 8.44772 22 9V22.5L17.5455 19H9C8.44772 19 8 18.5523 8 18V17Z"></path></svg>
-              <p className='text-white text-center text-xl'>Ask your Numerical</p>
-              </div>
-
-            </div> 
-          </div>
-
-        
-          <div className="w-[800px] h-[150px] flex flex-col items-center gap-y-8">
-            <p className=" w-[540px] h-[26px] font-poppins font-bold text-2xl leading-[26px] text-center text-white flex gap-x-2 mt-4" >
-              You can also <span className="text-[#3015d6]" > search </span> for your answers below
+          <div className="w-full md:w-3/4 lg:w-1/2 flex flex-col items-center gap-y-8 mt-8">
+            <p className="w-full text-center text-white text-xl md:text-2xl lg:text-3xl font-bold flex gap-x-2">
+              You can also <span className="text-[#3015d6]">search</span> for your answers below
               <BsStars className="fill-[#3015d6] rotate-[135deg]" />
             </p>
-
-            <div className="w-[750px] h-[77px] bg-custom-grad flex items-center justify-center rounded-[20px] border-none">
-              <div className=" w-[745px] h-[72px] rounded-[20px] border-none p-[8.93px_30.9px_8.93px_30.9px] bg-[#1c1f28] shadow-[0px_0px_66.67px_10.99px_#3E2487]
-                flex justify-center items-center">
-
-                <div className="w-[550px] h-[48px] flex justify-between items-center relative">
-
-
-                  <FaSearch className="fill-white w-[34px] h-[34px] cursor-pointer" />
-                  <BsStars className="fill-white absolute top-0 left-6 -rotate-90 ml-1" />
-
-                  <input type="text" className=" ml-9 w-[500px] bg-transparent placeholder:w-[190px] text-2xl placeholder:h-[34px] placeholder:font-poppins
-                        placeholder:font-normal placeholder:text-[25px] placeholder:leading-[36px] placeholder:text-white outline-none text-white font-poppins font-normal" placeholder="Paste Your Topic to Study" value={text} onChange={handelText} />
-
-                  <div className="w-[48px] h-[47px] rounded-[7px] bg-[#272b34] ml-4 flex items-center justify-center hover:cursor-pointer">
-                    <VscSend className="fill-white w-[24.35px] h-[24.35px]" onClick={async()=>{
-                      let c=await explaincontext(text);
-                      console.log(c)
-                      navigate('/textupload',{ state: { c } })
-                      }} />
-                  </div>
-
+            <div className="w-full bg-custom-grad flex items-center justify-center rounded-2xl p-2">
+              <div className="w-full bg-[#1c1f28] rounded-2xl p-2 flex items-center shadow-lg">
+                <FaSearch className="fill-white w-8 h-8 cursor-pointer" />
+                <BsStars className="fill-white absolute top-0 left-6 -rotate-90 ml-1" />
+                <input type="text" className="flex-grow bg-transparent text-white text-lg md:text-xl lg:text-2xl placeholder-white outline-none ml-4" placeholder="Paste Your Topic to Study" value={text} onChange={handelText} />
+                <div className="w-12 h-12 bg-[#272b34] rounded-lg flex items-center justify-center ml-4 cursor-pointer" onClick={async () => {
+                  let c = await explaincontext(text);
+                  console.log(c);
+                  navigate('/textupload', { state: { c } });
+                }}>
+                  <VscSend className="fill-white w-6 h-6" />
                 </div>
               </div>
             </div>
           </div>
         </>
-
       }
     </section>
-
   )
 }
 

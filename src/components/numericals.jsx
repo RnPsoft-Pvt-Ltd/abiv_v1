@@ -29,6 +29,7 @@ const Video = () => {
     const [teacher,setTeacher]=useState('null')
     const [stop,setstopper]=useState(true)
     const audioRef = useRef(null);
+    const[soundstate,setsoundstate]=useState(false)
     const [duration,setduration]=useState(0);
     const [isTLoaded,setTLoaded]=useState(true)
     const videoRef1 = useRef(null);
@@ -72,7 +73,9 @@ const {to_write}=location.state||{}
 const towrite=to_write
 const data2 = JSON.parse(localStorage.getItem('numericals'))
 useEffect(() => {
+  localStorage.setItem('textIndex','0')
     const handleScroll = () => {
+      try{
       const pre = preRef.current;
       const isNearBottom =
         pre.scrollHeight - pre.scrollTop <= pre.clientHeight -50;
@@ -85,11 +88,14 @@ useEffect(() => {
           setIsUserScrolling(false); 
         }, 1000); 
       }
-    };
+    
+      }catch(e){
+
+      }  };
 
     const pre = preRef.current;
     if (pre) pre.addEventListener("scroll", handleScroll);
-
+  
     return () => {
       if (pre) pre.removeEventListener("scroll", handleScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
@@ -97,9 +103,9 @@ useEffect(() => {
   }, []);
 
   useEffect(() => {
-    
+    try{
       preRef.current.scrollTop = preRef.current.scrollHeight;
-    
+    }catch(e){}
   }, [displayText,isUserScrolling]);
 
   const requestMicrophoneAccess = async () => {
@@ -117,8 +123,11 @@ useEffect(() => {
     }
   };
   useEffect(() => {
+    if(!localStorage.getItem('textIndex'))localStorage.setItem('textIndex','0')
+      if(Number(localStorage.getItem('textIndex'))==textIndex) setCharIndex(0); 
     if (textIndex < data2.length) {
-      if (data2[textIndex].decoration.includes("box")) {
+      if (data2[textIndex].decoration.includes("box")&& Number(localStorage.getItem('textIndex'))==textIndex) {
+        localStorage.setItem('textIndex',Number(localStorage.getItem('textIndex'))+1)
         // Add the whole text to the displayTexts array at once
         setDisplayTexts(prev => [
           ...prev,
@@ -127,13 +136,15 @@ useEffect(() => {
             decoration: data2[textIndex].decoration
           }
         ]);
-        setTextIndex(textIndex + 1); // Move to the next text segment
+          console.log('here')
+    
         setCharIndex(0); // Reset character index for the new text item
         return;
       }
-
-      if (charIndex < data2[textIndex].text.length) {
-        audioRef.current?.play();
+                
+      if (charIndex < data2[textIndex].text.length && !data2[textIndex].decoration.includes("box")) {
+        if(Number(localStorage.getItem('textIndex'))==textIndex)
+        localStorage.setItem('textIndex',Number(localStorage.getItem('textIndex'))+1)
 
         const timer = setTimeout(() => {
           // Temporarily show the larger character effect
@@ -150,18 +161,29 @@ useEffect(() => {
                 decoration: data2[textIndex].decoration
               }
             ]);
-            if(!isUserScrolling)preRef.current.scrollTop = preRef.current.scrollHeight;
+            if(!isUserScrolling){
+              try{
+              preRef.current.scrollTop = preRef.current.scrollHeight;}catch(e){}
+            }
             setCharIndex(charIndex + 1);
           }, 65);
         }, 70);
         return () => clearTimeout(timer);
       } else {
         // Move to the next text item
-        setTextIndex(textIndex + 1);
-        setCharIndex(0); // Reset character index for the new text item
+       // Reset character index for the new text item
       }
     }
-  }, [charIndex, textIndex]);
+  
+  }, [charIndex, soundstate]);
+
+  useEffect(()=>{
+    try{
+    audioRef.current.src=`https://abiv.rnpsoft.com/stream/${data2[textIndex].sound}.wav`
+      audioRef.current.load();         
+      audioRef.current.play();
+    }catch(e){}
+  },[soundstate])
 let durations={}
 const [dura,setdura]=useState({})
     const[act,setact]=useState(false)
@@ -324,16 +346,16 @@ const [dura,setdura]=useState({})
       console.log(Object.keys(dict[i-1]).length)
       for(let j=1;j<=Object.keys(dict[i-1]).length;j++){
         console.log('j');
-        for(let k=Number(localStorage.getItem('capt'));k<=Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1]);k++){
-          durations[`${k}`]=dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][0]
+        for(let k=Number(localStorage.getItem('capt'));k<=Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C${Number(flagged+1)}D${Number(flagged+1)}xchunk_${i}_sentence_${j}`][1]);k++){
+          durations[`${k}`]=dict[i-1][`C${Number(flagged+1)}D${Number(flagged+1)}xchunk_${i}_sentence_${j}`][0]
           setdura(prevDuration => ({
             ...prevDuration,
-            [`${k}`]: dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][0]
+            [`${k}`]: dict[i-1][`C${Number(flagged+1)}D${Number(flagged+1)}xchunk_${i}_sentence_${j}`][0]
           }));
         }
         console.log(durations)
-        setcapt(capt+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1]))
-        localStorage.setItem('capt',`${Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C1D1xchunk_${i}_sentence_${j}`][1])}`)
+        setcapt(capt+Math.round(dict[i-1][`C${Number(flagged+1)}D${Number(flagged+1)}xchunk_${i}_sentence_${j}`][1]))
+        localStorage.setItem('capt',`${Number(localStorage.getItem('capt'))+Math.round(dict[i-1][`C${Number(flagged+1)}D${Number(flagged+1)}xchunk_${i}_sentence_${j}`][1])}`)
       }
       console.log('ho')
       console.log(durations)
@@ -418,7 +440,7 @@ const [dura,setdura]=useState({})
         const videoUrl = URL.createObjectURL(videoBlob);
         setVideoSrc(videoUrl);
         localStorage.setItem('animation', videoUrl);
-        console.log(JSON.stringify(localStorage.getItem('animation')))
+        console.log(JSON.stringify(localStorage.getItem('animation')));
         setLoaded(false)
       } catch (error) {
         console.error(error);
@@ -485,7 +507,6 @@ const [dura,setdura]=useState({})
     }, [quizInterval]);
     const closeQuiz = async() => {
         setShowQuiz(false);
-        audioRef1.current.pause()
         setQuizInterval(prev => prev + 10); 
         videoRef1.current.src=doubtanim
         videoRef2.current.src=doubtteacher
@@ -500,14 +521,11 @@ const [dura,setdura]=useState({})
       if (isPlaying) {
         videoRef1.current.pause(); // Pause the second video
         videoRef2.current.pause();
-        audioRef.current.pause();
         audioRef.current.volume=0.8
 
       } else {
         videoRef2.current.play(); // Play the second video
         videoRef1.current.play();
-        audioRef.current.volume=0.8
-        audioRef.current.play();
         
         
       }
@@ -561,7 +579,6 @@ setl1(true)
           if(login){
           videoRef1.current.play()
           videoRef2.current.play()
-          audioRef.current.play()
           }
           videoRef1.current.oncanplaythrough = () => {setl1(false);
             console.log(Number(localStorage.getItem('duration')))
@@ -614,7 +631,6 @@ setl1(true)
           setdbt(dbt+1);
         videoRef1.current.play()
         videoRef2.current.play()
-        audioRef.current.play()
         videoRef1.current.muted=false
         videoRef2.current.muted=true
         
@@ -631,7 +647,6 @@ setl1(true)
     const Endgame=async()=>{
       videoRef1.current.pause()
       console.log(videoRef1.current.duration)
-      audioRef.current.pause()
       console.log(b)
       setact(false)
       console.log(data[flagged][6])
@@ -715,7 +730,6 @@ recognition.onstart = function() {
           setShowQuiz(true)
           setnumber(number+1)
           localStorage.setItem('mcq','1');
-          audioRef1.current.play()
           }else{
             videoRef1.current.src=doubtanim
             videoRef2.current.src=doubtteacher
@@ -807,7 +821,11 @@ checkVideoAvailability(Number(localStorage.getItem('b')))
             </div>
            
             <i id="fullscreen-toggle-btn" className="text-white cursor-pointer">[Fullscreen]</i>
-            <audio ref={audioRef} src='https://abiv.rnpsoft.com/stream/YourAudioFile.wav' autoPlay  />
+            <audio ref={audioRef} src={`https://abiv.rnpsoft.com/stream/${data2[0].sound}.wav`} autoPlay onEnded={()=>{
+              setTimeout(()=>{
+              setTextIndex(textIndex + 1);
+              setsoundstate(soundstate?false:true)},[1000])
+            }}/>
 <audio ref={audioRef1} src={mcq}/>
             <p className='w-[80%] md:w-[50%] text-sm  lg:text-xl  text-center mt-5'>YOU CAN EASILY DOWNLOAD THE NOTES FROM BELOW AND 
             ALSO ASK DOUBTS IF YOU HAVE ANY.</p>

@@ -26,15 +26,16 @@ const Popup = () => {
       
       return result;
   }
-    const handleUpload = async (data) => {
-      
+    const handleUpload = async (data) => {  
       try {
         if (language.includes('False'))data='False'
+        else if(language.includes('True1'))data='True1'
         else data='True'
-        const formData = new FormData();
-        formData.append('file', c);
-    formData.append('text',data);
-    formData.append('sessionid',random)
+    const formData = new FormData();
+     formData.append('file', c);
+     formData.append('text',data);
+     formData.append('sessionid',random)
+    localStorage.setItem('sessionid',random)
     const response = await axios.post('https://abiv.rnpsoft.com/textupload', {
       file:c,
       text: data,
@@ -96,33 +97,27 @@ localStorage.setItem('isCheck','True')
     }, [closer, loader, nav]);
   return (
     
-      <div className='z-[2] w-full h-[90%] md:w-[90%] md:h-[80%] flex justify-center items-center flex-col  '>
-       <h1 className={`sm:text-4xl lg:text-[2.5rem]  text-[1.75rem] w-full font-bold ${closer && 'text-[#928d8d]'}  text-center  `}>Study with any Text/Image/PDF</h1>
-       <p className={`text-[#B9B9B9] font-bold text-sm  sm-text-lg  md:text-xl p-3 w-[90%] lg:w-[60%]  text-center ${closer && 'hidden'} `}>Join millions of students, researchers and professionals to  instantly answer questions and understand research with AI </p>
+    <div className='z-[2] w-full h-[95%] md:w-[90%] md:h-[85%] flex justify-center items-center flex-col'>
+    <h1 className={`sm:text-4xl lg:text-[2.5rem] text-[1.75rem] w-full font-bold ${closer && 'text-[#928d8d]'} text-center`}>Study with any Text/Image/PDF</h1>
+    <p className={`text-[#B9B9B9] font-bold text-sm sm-text-lg md:text-xl p-3 w-[90%] lg:w-[60%] text-center ${closer && 'hidden'}`}>Join millions of students, researchers and professionals to instantly answer questions and understand research with AI</p>
 
-       { closer 
-       ? <div className='m-2 h-[30%] w-[80%] sm:h-[60%] sm:w-[60%] lg:w-[50%]  border  text-white flex justify-center items-center  border-[#D9D9D9] bg-[#ffff] mt-10 max-h-80'> <FadeLoader color="#adadad" /> </div>
-       : <div className='m-2 h-[30%] w-[80%] sm:h-[60%] sm:w-[60%] lg:w-[50%] border-[2px] border-dashed rounded-lg text-white flex flex-col justify-evenly items-center text-center  border-[#D9D9D9] bg-[#010C16] mt-10 max-h-80 '>
-       
-          <p className={`text-sm text-[#828282] md:text-[16px] tracking-tight ${lngSelected && 'hidden'}`}>Please choose the language you are comfortable with!</p>
-
-          <div className={`flex justify-evenly  w-full ${lngSelected && 'hidden'} `}>
-            <button className='tracking-tight text-center w-[7rem] p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl 'defaultValue={"English"} onClick={()=>{handelLanguage('False')}} >Continue in English</button>
-            <button className='tracking-tight w-[7rem] text-center p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl ' defaultValue={"Hindi"} onClick={()=>{handelLanguage('True')}} >Continue in Hindi</button>
+    {closer 
+      ? <div className='m-2 h-[35%] w-[80%] sm:h-[65%] sm:w-[60%] lg:w-[50%] border text-white flex justify-center items-center border-[#D9D9D9] bg-[#ffff] mt-10 max-h-80'><FadeLoader color="#adadad" /></div>
+      : <div className='m-2 h-[35%] w-[80%] sm:h-[65%] sm:w-[60%] lg:w-[50%] border-[2px] border-dashed rounded-lg text-white flex flex-col justify-evenly items-center text-center border-[#D9D9D9] bg-[#010C16] mt-10 max-h-80'>
+        
+        <br /><br />  <p className={`text-sm text-[#828282] md:text-[16px] tracking-tight ${lngSelected && 'hidden'}`}>Please choose the language you are comfortable with!</p>
+          <br /><br /> <br /><br /> <br /><br />
+          <div className={`flex justify-evenly w-full ${lngSelected && 'hidden'}`}>
+           
+            <button className='tracking-tight text-center w-[7rem] p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl' defaultValue={"English"} onClick={() => { handelLanguage('False') }}>Continue in English</button>
+            <button className='tracking-tight w-[7rem] text-center p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl' defaultValue={"Hindi"} onClick={() => { handelLanguage('True') }}>Continue in Hindi</button>
+            <button className='tracking-tight w-[7rem] text-center p-2 h-[2rem] text-[10px] bg-[#8d53df] rounded-3xl' defaultValue={"Hindi"} onClick={() => { handelLanguage('True1') }}>Continue in Hinglish</button>
           </div>
-
-          {lngSelected && 
-          <FadeLoader color="#adadad"  />
-          }
-
-
-       
+          <br /><br /> <br /><br /> <br /><br />
+          {lngSelected && <FadeLoader color="#adadad" />}
         </div>
-
-       }
-       
-      
-    </div>
+    }
+  </div>
   )
 }
 

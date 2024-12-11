@@ -7,7 +7,6 @@ const Page8 = () => {
         <>
             <section className="FAQ py-12 bg-[#010B78]">
                 <div className="flex flex-col lg:flex-row justify-between items-center px-4">
-                    <img className="w-[150px] md:w-[200px] lg:w-[250px] h-[100px] md:h-[150px] lg:h-[200px] mx-6 hidden lg:block" src={faqimg} alt="FAQ Image" />
                     <div className="FAQheading text-center mx-auto">
                         <h1 className="text-3xl md:text-5xl text-white">FAQ</h1>
                         <h2 className="text-2xl md:text-4xl lg:text-6xl text-white my-4 lg:my-7">Ask Me Anything</h2>
@@ -23,7 +22,6 @@ const Page8 = () => {
                             </div>
                         </form>
                     </div>
-                    <img className="w-[150px] md:w-[200px] lg:w-[250px] h-[100px] md:h-[150px] lg:h-[200px] mx-6 hidden lg:block" src={faqimg} alt="FAQ Image" />
                 </div>
             </section>
             <section className="question py-10 bg-gradient-to-b from-[#000D3F] to-black">

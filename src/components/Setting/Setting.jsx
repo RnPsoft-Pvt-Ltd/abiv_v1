@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import eclipse4 from "../../assets/Ellipse 4.png";
 import eclipse2 from "../../assets/Ellipse 2.png";
 import eclipse3 from "../../assets/Ellipse 3.png";
@@ -9,7 +9,9 @@ import coin from "../../assets/image 96.png";
 import bell from "../../assets/Group 48097070.png";
 
 const Setting = () => {
+  
   const [firstName, setFirstName] = useState('');
+  const [email1,setemail]=useState('')
   const [lastName, setLastName] = useState('');
   const [currentPassword, setCurrentPassword] = useState('3750847205729476');
   const [newPassword, setNewPassword] = useState('24857028947609726');
@@ -17,6 +19,32 @@ const Setting = () => {
   const [category, setCategory] = useState('');
   const [phoneNo, setPhoneNo] = useState('+91 965838207607');
   const [creditBalance, setCreditBalance] = useState('71');
+useEffect(() => {
+  if(localStorage.getItem('auth-token')){
+    console.log('user-data',JSON.parse(localStorage.getItem('user-data')))
+    let email=JSON.parse(localStorage.getItem('user-data')).email;
+console.log('email',email)
+    fetch("https://abiv.rnpsoft.com/fetchdata", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({'email':email})
+    }).then(response => response.json())
+    .then(data => {
+      setFirstName(data.data.firstName)
+      console.log('data',data.data)
+      setemail(data.data.email)
+      setLastName(data.data.lastName)
+      setCreditBalance(data.data.coins)
+      setCurrentPassword(data.data.password)}).catch((error) => {
+      console.error('Error:', error);})
+    }else{
+      setFirstName('unknown')
+      setLastName('user')
+      setCreditBalance(Number(localStorage.getItem('coins')))
+      setCurrentPassword('abiv');
+    }},[]);
 
   const inputStyle = "w-full md:w-[90%] p-2 rounded bg-white border border-gray-600 text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 ";
 
@@ -36,7 +64,7 @@ const Setting = () => {
           </div>
           <div className='bg-[#FFFFFF] bg-opacity-30 w-full lg:w-[95%] h-[80%]'>
             <div className='w-full bg-[#0E0D0D] bg-opacity-[70%] h-[4rem] flex justify-between items-center p-4 lg:p-10'>
-              <h1 className="text-lg lg:text-2xl font-semibold">Welcome, Arindam</h1>
+              <h1 className="text-lg lg:text-2xl font-semibold">Welcome, {firstName}</h1>
               <div className='p-1 px-3 rounded-3xl bg-yellow-200 text-black font-semibold'>
                 BASIC
               </div>
@@ -47,8 +75,8 @@ const Setting = () => {
                 <div className='flex items-center mb-4 lg:mb-0'>
                   <img src={avatar} alt="Avatar" className="w-12 lg:w-16 h-12 lg:h-16 rounded-full border-2 border-gray-500 mr-4" />
                   <div>
-                    <p className="font-semibold">Arindam Kanrar</p>
-                    <p className="text-gray-400">arindam.ck.yuvja@gmail.com</p>
+                    <p className="font-semibold">{firstName} {lastName}</p>
+                    <p className="text-gray-400">{email1}</p>
                     <p className="text-gray-400">&lt;STUDENT&gt;</p>
                   </div>
                 </div>
@@ -133,26 +161,19 @@ const Setting = () => {
               </div>
 
               <div className='px-3 pb-3 w-full flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0'>
-                <div className='w-full lg:w-[35%] px-3'>
+                <div className='w-full lg:w-[45%] px-5'>
                   <p>Category</p>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className={inputStyle}
                   >
-                    <option value="basic">basic</option>
-                    <option value="standard">standard</option>
-                    <option value="premium">premium</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
                   </select>
                 </div>
-                <div className='w-full lg:w-[35%] px-3'>
-                  <p>Update Phone No.</p>
-                  <div className="w-full md:w-[90%] p-2 rounded text-gray-600 bg-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between">
-                    {phoneNo}
-                    <img src={tick} alt="" />
-                  </div>
-                </div>
-                <div className='w-full lg:w-[35%] px-3'>
+               
+                <div className='w-full lg:w-[40%] px-3'>
                   <p>Credit Balance</p>
                   <div className="w-full md:w-[90%] text-gray-400 rounded items-center bg-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 flex justify-between p-1">
                     <div className='flex items-center font-[Poly] text-xl'><img src={coin} alt="" />{creditBalance} </div>

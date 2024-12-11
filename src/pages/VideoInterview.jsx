@@ -59,11 +59,10 @@ const VideoInterview = () => {
             console.log(transcript);
             console.log("transcript:", transcript);
             recognition.stop();
-
+            
             if(value==1){
               setvalue(2)
               setmessage(prevMessages => [...prevMessages, {role:'assistant',content:'Hey I am your Interviewer, I will be interviewing you today, May i know your name'}]);
-
             }
             setmessage(prevMessages => [...prevMessages, { role: 'user', content: transcript }]);
 
@@ -84,6 +83,7 @@ const VideoInterview = () => {
     console.log(chatResponse)
     setmessage(prevMessages => [...prevMessages, { role: 'assistant', content: chatResponse }]);
     console.log(messageHistory)
+    localStorage.setItem('coins',`${Number(localStorage.getItem('coins'))-3}`)
 
           interview[2][0]=1;
           interview[2][1]=chatResponse
